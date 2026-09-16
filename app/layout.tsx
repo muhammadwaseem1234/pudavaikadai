@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Alex_Brush, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -14,6 +14,20 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const alexBrush = Alex_Brush({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-alex-brush",
+  display: "swap",
+});
+
+const playfairDisplay = Playfair_Display({
+  weight: ["400", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -52,8 +66,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${alexBrush.variable} ${playfairDisplay.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-white text-stone-900">
         <AnnouncementBar />
         <Navbar />

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   Search,
   Heart,
@@ -19,6 +20,7 @@ import { useAuthStore } from "@/lib/store/useAuthStore";
 import { SearchModal } from "@/components/search/SearchModal";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [collectionsOpen, setCollectionsOpen] = useState(false);
@@ -28,6 +30,32 @@ export default function Navbar() {
   const { openDrawer, getItemCount } = useCartStore();
   const { getItemCount: getWishlistCount } = useWishlistStore();
   const { isAuthenticated } = useAuthStore();
+
+  const handleNavClick = (href: string, e: React.MouseEvent) => {
+    if (href.startsWith("/#") && pathname === "/") {
+      e.preventDefault();
+      const targetId = href.replace("/#", "");
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", href);
+      }
+    }
+  };
+
+  const handleMobileNavClick = (href: string) => {
+    setMobileOpen(false);
+    if (href.startsWith("/#") && pathname === "/") {
+      const targetId = href.replace("/#", "");
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+          window.history.pushState(null, "", href);
+        }
+      }, 150);
+    }
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -133,6 +161,7 @@ export default function Navbar() {
                     <Link
                       key={item.id}
                       href={item.href}
+                      onClick={(e) => handleNavClick(item.href, e)}
                       className="py-2 hover:text-stone-950 transition-colors relative group"
                     >
                       <span>{item.label}</span>
@@ -239,7 +268,7 @@ export default function Navbar() {
                 <div key={item.id} className="border-b border-stone-100 pb-3">
                   <Link
                     href={item.href}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={() => handleMobileNavClick(item.href)}
                     className="block font-medium text-stone-800 hover:text-black"
                   >
                     {item.label}

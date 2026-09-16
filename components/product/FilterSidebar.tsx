@@ -12,23 +12,6 @@ interface FilterSidebarProps {
   className?: string;
 }
 
-const FABRICS = [
-  "Pure Mulberry Silk",
-  "Pure Tissue Silk",
-  "Katan Silk",
-  "Pure Soft Silk",
-  "Muslin Silk",
-  "Pure Organza",
-];
-
-const ZARI_TYPES = [
-  "Gold Zari",
-  "Silver Zari",
-  "Antique Gold Zari",
-  "Copper Zari",
-  "Tested Zari",
-];
-
 const PRICE_PRESETS = [
   { label: "All Prices", min: undefined, max: undefined },
   { label: "Under ₹ 25,000", min: 0, max: 25000 },
@@ -46,8 +29,6 @@ export function FilterSidebar({
 }: FilterSidebarProps) {
   const hasActiveFilters =
     Boolean(filters.categorySlug) ||
-    Boolean(filters.fabric) ||
-    Boolean(filters.zariType) ||
     Boolean(filters.inStockOnly) ||
     filters.minPrice !== undefined ||
     filters.maxPrice !== undefined;
@@ -80,11 +61,10 @@ export function FilterSidebar({
           <button
             type="button"
             onClick={() => onFilterChange({ ...filters, categorySlug: undefined })}
-            className={`w-full text-left py-1 px-2 transition-colors flex items-center justify-between ${
-              !filters.categorySlug
+            className={`w-full text-left py-1 px-2 transition-colors flex items-center justify-between ${!filters.categorySlug
                 ? "font-semibold text-stone-900 bg-stone-100"
                 : "text-stone-600 hover:text-stone-950 hover:bg-stone-50"
-            }`}
+              }`}
           >
             <span>All Categories</span>
             {!filters.categorySlug && <Check className="w-3 h-3 text-stone-900" />}
@@ -101,11 +81,10 @@ export function FilterSidebar({
                     categorySlug: isSelected ? undefined : cat.slug,
                   })
                 }
-                className={`w-full text-left py-1 px-2 transition-colors flex items-center justify-between ${
-                  isSelected
+                className={`w-full text-left py-1 px-2 transition-colors flex items-center justify-between ${isSelected
                     ? "font-semibold text-stone-900 bg-stone-100"
                     : "text-stone-600 hover:text-stone-950 hover:bg-stone-50"
-                }`}
+                  }`}
               >
                 <span>{cat.name}</span>
                 {isSelected && <Check className="w-3 h-3 text-stone-900" />}
@@ -170,69 +149,6 @@ export function FilterSidebar({
         </label>
       </div>
 
-      {/* Fabric Filter */}
-      <div className="space-y-3 pt-4 border-t border-stone-200">
-        <h4 className="uppercase tracking-[0.15em] font-semibold text-stone-900">
-          Fabric
-        </h4>
-        <div className="space-y-1">
-          {FABRICS.map((fabric) => {
-            const isSelected = filters.fabric === fabric;
-            return (
-              <button
-                key={fabric}
-                type="button"
-                onClick={() =>
-                  onFilterChange({
-                    ...filters,
-                    fabric: isSelected ? undefined : fabric,
-                  })
-                }
-                className={`w-full text-left py-1 px-2 transition-colors flex items-center justify-between ${
-                  isSelected
-                    ? "font-semibold text-stone-900 bg-stone-100"
-                    : "text-stone-600 hover:text-stone-950 hover:bg-stone-50"
-                }`}
-              >
-                <span>{fabric}</span>
-                {isSelected && <Check className="w-3 h-3 text-stone-900" />}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Zari Type Filter */}
-      <div className="space-y-3 pt-4 border-t border-stone-200">
-        <h4 className="uppercase tracking-[0.15em] font-semibold text-stone-900">
-          Zari Embellishment
-        </h4>
-        <div className="space-y-1">
-          {ZARI_TYPES.map((zari) => {
-            const isSelected = filters.zariType === zari;
-            return (
-              <button
-                key={zari}
-                type="button"
-                onClick={() =>
-                  onFilterChange({
-                    ...filters,
-                    zariType: isSelected ? undefined : zari,
-                  })
-                }
-                className={`w-full text-left py-1 px-2 transition-colors flex items-center justify-between ${
-                  isSelected
-                    ? "font-semibold text-stone-900 bg-stone-100"
-                    : "text-stone-600 hover:text-stone-950 hover:bg-stone-50"
-                }`}
-              >
-                <span>{zari}</span>
-                {isSelected && <Check className="w-3 h-3 text-stone-900" />}
-              </button>
-            );
-          })}
-        </div>
-      </div>
     </aside>
   );
 }

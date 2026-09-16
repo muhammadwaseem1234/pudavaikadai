@@ -79,18 +79,6 @@ export async function getProducts(
       list = list.filter((p) => p.stockStatus === "in_stock");
     }
 
-    if (filters.fabric) {
-      list = list.filter((p) =>
-        p.fabric?.toLowerCase().includes(filters.fabric!.toLowerCase())
-      );
-    }
-
-    if (filters.zariType) {
-      list = list.filter((p) =>
-        p.zariType?.toLowerCase().includes(filters.zariType!.toLowerCase())
-      );
-    }
-
     if (filters.searchQuery) {
       const q = filters.searchQuery.toLowerCase().trim();
       list = list.filter(

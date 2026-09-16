@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { getCollections } from "@/lib/api/collections";
 import { getProducts } from "@/lib/api/products";
 import { ProductCard } from "@/components/product/ProductCard";
 import { ArrowRight, Sparkles } from "lucide-react";
@@ -10,7 +9,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 export const metadata: Metadata = {
   title: "Collections | Pudavai Kadai - Heritage Handlooms",
   description:
-    "Explore our signature handloom saree collections: Festive Edits, Pure Silk Sarees, and Cotton Silk & Lenin Sarees.",
+    "Explore our signature handloom saree collections: Pure Silk Sarees, Cotton Silk Sarees, Lenin Sarees, and Cotton Sarees.",
 };
 
 // SVG Lotus Flower Emblem matching the reference design
@@ -23,7 +22,7 @@ function LotusIcon() {
       strokeWidth="1.2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-7 h-7 text-[#dfb873] mx-auto opacity-95 transition-transform duration-500 group-hover:scale-110"
+      className="w-6 h-6 sm:w-7 sm:h-7 text-[#dfb873] mx-auto opacity-95 transition-transform duration-500 group-hover:scale-110"
     >
       {/* Center petal */}
       <path d="M12 3C12 3 8 8 8 13C8 15.5 9.8 17.5 12 17.5C14.2 17.5 16 15.5 16 13C16 8 12 3 12 3Z" />
@@ -47,14 +46,7 @@ interface CollectionPanel {
 }
 
 export default async function CollectionsPage() {
-  const [collections, { products }] = await Promise.all([
-    getCollections(),
-    getProducts(),
-  ]);
-
-  const col1 = collections[0];
-  const col2 = collections[1];
-  const col3 = collections[2];
+  const { products } = await getProducts();
 
   const panels: CollectionPanel[] = [
     {
@@ -62,7 +54,7 @@ export default async function CollectionsPage() {
       tag: "PURE SILK SAREES",
       headline: "Celebrate in Silk",
       subtitle: "Timeless sarees for your most cherished moments.",
-      href: `/collections/${col1?.slug || "silk-sarees"}`,
+      href: `/collections/silk-sarees`,
       image: "/images/part.png",
     },
     {
@@ -70,16 +62,24 @@ export default async function CollectionsPage() {
       tag: "COTTON SILK SAREES",
       headline: "Luxury in Every Thread",
       subtitle: "Rich textures. Timeless elegance.",
-      href: `/collections/${col2?.slug || "silk-sarees"}`,
+      href: `/collections/cotton-silk-sarees`,
       image: "/images/p.png",
     },
     {
       id: "lenin-sarees",
       tag: "LENIN SAREES",
-      headline: "Light. Graceful. Everyday Elegance.",
+      headline: "Light & Graceful",
       subtitle: "Comfort meets tradition in every drape.",
-      href: `/collections/${col3?.slug || "cotton-sarees"}`,
+      href: `/collections/lenin-sarees`,
       image: "/images/pp.png",
+    },
+    {
+      id: "cotton-sarees",
+      tag: "COTTON SAREES",
+      headline: "Pure Daily Comfort",
+      subtitle: "Crisp handloom weaves for effortless poise.",
+      href: `/collections/cotton-sarees`,
+      image: "/images/cotton_sarees_grid.png",
     },
   ];
 
@@ -102,29 +102,30 @@ export default async function CollectionsPage() {
             </h1>
           </div>
           <p className="text-xs sm:text-sm text-stone-600 font-light max-w-md leading-relaxed">
-            Every drape preserves a centuries-old craft lineage. Explore our three signature edits, tailored for celebratory splendor and graceful comfort.
+            Every drape preserves a centuries-old craft lineage. Explore our four signature edits, tailored for celebratory splendor and graceful comfort.
           </p>
         </div>
       </div>
 
-      {/* 3-Collection Editorial Layout (Picture Layout) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-0 overflow-hidden shadow-2xl rounded-sm border border-stone-200/70 bg-stone-950">
+      {/* 4-Collection Editorial Layout (Aligned in Same Line) */}
+      <section className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-0 overflow-hidden shadow-2xl rounded-sm border border-stone-200/70 bg-stone-950">
           {panels.map((panel, idx) => (
             <Link
               key={panel.id}
               href={panel.href}
-              className={`group relative block w-full overflow-hidden select-none ${idx !== panels.length - 1 ? "md:border-r md:border-stone-800/40" : ""
-                }`}
+              className={`group relative block w-full overflow-hidden select-none ${
+                idx !== panels.length - 1 ? "md:border-r md:border-stone-800/40" : ""
+              }`}
             >
               {/* Vertical Card Container with Saree Image */}
-              <div className="relative w-full h-[580px] sm:h-[640px] lg:h-[720px] overflow-hidden bg-stone-950 transition-all duration-700">
+              <div className="relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[680px] overflow-hidden bg-stone-950 transition-all duration-700">
                 {/* Background Saree Image */}
                 <Image
                   src={panel.image}
                   alt={panel.headline}
                   fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
+                  sizes="(max-width: 768px) 100vw, 25vw"
                   className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-108"
                   priority={idx === 0}
                 />
@@ -139,31 +140,31 @@ export default async function CollectionsPage() {
                 <div className="absolute inset-0 border border-transparent group-hover:border-[#dfb873]/50 transition-colors duration-500 pointer-events-none" />
 
                 {/* Centered Editorial Content Overlay */}
-                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 lg:p-10 flex flex-col items-center text-center justify-end z-10">
+                <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 lg:p-5 xl:p-7 flex flex-col items-center text-center justify-end z-10">
                   {/* Gold Lotus Icon */}
-                  <div className="mb-3">
+                  <div className="mb-2.5 sm:mb-3">
                     <LotusIcon />
                   </div>
 
                   {/* Category Tag */}
-                  <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-[#dfb873] font-semibold block mb-2 drop-shadow-xs">
+                  <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-[#dfb873] font-semibold block mb-1.5 drop-shadow-xs">
                     {panel.tag}
                   </span>
 
                   {/* Editorial Headline */}
-                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-white font-normal leading-tight mb-2.5 group-hover:text-[#dfb873] transition-colors duration-300 drop-shadow-md">
+                  <h2 className="text-lg sm:text-xl lg:text-2xl xl:text-[26px] font-serif text-white font-normal leading-tight mb-2 group-hover:text-[#dfb873] transition-colors duration-300 drop-shadow-md">
                     {panel.headline}
                   </h2>
 
                   {/* Subtitle */}
-                  <p className="text-xs sm:text-sm text-stone-200/90 font-light max-w-xs mx-auto leading-relaxed mb-6 drop-shadow-xs">
+                  <p className="text-[11px] sm:text-xs text-stone-200/90 font-light max-w-[220px] sm:max-w-[240px] mx-auto leading-relaxed mb-4 sm:mb-5 drop-shadow-xs">
                     {panel.subtitle}
                   </p>
 
                   {/* Outlined Pill Button */}
-                  <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-white/50 bg-black/30 backdrop-blur-md text-xs uppercase tracking-[0.18em] text-white font-medium group-hover:bg-white group-hover:text-stone-950 group-hover:border-white transition-all duration-300 shadow-md">
+                  <div className="inline-flex items-center gap-1.5 px-4 sm:px-5 py-2 rounded-full border border-white/50 bg-black/30 backdrop-blur-md text-[10px] sm:text-[11px] uppercase tracking-[0.16em] text-white font-medium group-hover:bg-white group-hover:text-stone-950 group-hover:border-white transition-all duration-300 shadow-md">
                     <span>Shop Now</span>
-                    <span className="text-sm transition-transform duration-300 group-hover:translate-x-1">
+                    <span className="text-xs sm:text-sm transition-transform duration-300 group-hover:translate-x-1">
                       →
                     </span>
                   </div>
@@ -190,7 +191,7 @@ export default async function CollectionsPage() {
             Silk Sarees
           </Link>
           <Link
-            href="/collections/cotton-sarees"
+            href="/collections/cotton-silk-sarees"
             className="px-5 py-2.5 text-xs uppercase tracking-[0.18em] font-medium rounded-full border border-stone-300 text-stone-700 hover:border-[#927238] hover:text-[#927238] transition-colors"
           >
             Cotton Silk Sarees
@@ -200,6 +201,12 @@ export default async function CollectionsPage() {
             className="px-5 py-2.5 text-xs uppercase tracking-[0.18em] font-medium rounded-full border border-stone-300 text-stone-700 hover:border-[#927238] hover:text-[#927238] transition-colors"
           >
             Lenin Sarees
+          </Link>
+          <Link
+            href="/collections/cotton-sarees"
+            className="px-5 py-2.5 text-xs uppercase tracking-[0.18em] font-medium rounded-full border border-stone-300 text-stone-700 hover:border-[#927238] hover:text-[#927238] transition-colors"
+          >
+            Cotton Sarees
           </Link>
         </div>
       </section>

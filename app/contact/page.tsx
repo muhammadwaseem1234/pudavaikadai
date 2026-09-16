@@ -49,9 +49,10 @@ export default function ContactPage() {
                 <div className="space-y-1">
                   <p className="font-semibold text-stone-900">Pudavai Kadai Heritage Flagship</p>
                   <p className="text-stone-600 leading-relaxed">
-                    No. 88, Cathedral Road, Gopalapuram,
+                    Plot no 6, 4th street, Kuberan nagar ext , Madipakkam
+
                     <br />
-                    Chennai, Tamil Nadu - 600086
+                    Chennai, Tamil Nadu - 600091
                   </p>
                 </div>
               </div>
@@ -60,8 +61,7 @@ export default function ContactPage() {
                 <Phone className="w-5 h-5 text-[#927238] shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
                   <p className="font-semibold text-stone-900">Voice Assistance & Video Calls</p>
-                  <p className="text-stone-600">+91 98401 23456</p>
-                  <p className="text-stone-600">+91 44 2811 9000</p>
+                  <p className="text-stone-600">+91 98402 48980</p>
                 </div>
               </div>
 
@@ -69,7 +69,7 @@ export default function ContactPage() {
                 <MessageSquare className="w-5 h-5 text-[#927238] shrink-0 mt-0.5" />
                 <div className="space-y-0.5">
                   <p className="font-semibold text-stone-900">WhatsApp Bridal Concierge</p>
-                  <p className="text-stone-600">+91 98401 23456 (Live Saree Video Drapes)</p>
+                  <p className="text-stone-600">+91 98402 48980(Live Saree Video Drapes)</p>
                 </div>
               </div>
 
@@ -78,15 +78,6 @@ export default function ContactPage() {
                 <div className="space-y-0.5">
                   <p className="font-semibold text-stone-900">Email Enquiries</p>
                   <p className="text-stone-600">concierge@pudavaikadai.com</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Clock className="w-5 h-5 text-[#927238] shrink-0 mt-0.5" />
-                <div className="space-y-0.5">
-                  <p className="font-semibold text-stone-900">Atelier Timings</p>
-                  <p className="text-stone-600">Monday - Saturday: 10:00 AM - 8:00 PM IST</p>
-                  <p className="text-stone-600">Sunday: 11:00 AM - 7:00 PM IST</p>
                 </div>
               </div>
             </div>
@@ -150,7 +141,7 @@ export default function ContactPage() {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="name@domain.com"
+                      placeholder="Enter your email Address"
                       className="w-full h-11 px-3.5 bg-white border border-stone-300 focus:outline-none focus:border-stone-900"
                     />
                   </div>
@@ -164,7 +155,7 @@ export default function ContactPage() {
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    placeholder="+91 98401 23456"
+                    placeholder="Enter your Phone Number"
                     className="w-full h-11 px-3.5 bg-white border border-stone-300 focus:outline-none focus:border-stone-900"
                   />
                 </div>

@@ -1,4 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+
+.font-script {
+  font-family: var(--font-alex-brush), "Alex Brush", "Great Vibes", cursive;
+}
+.font-serif-luxury {
+  font-family: var(--font-playfair), "Playfair Display", Georgia, serif;
+}
+.font-sans-clean {
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+}
 
 :root {
   --background: #ffffff;
@@ -41,3 +52,21 @@ body {
   background: #927238;
   color: #ffffff;
 }
+
+/* 3D Flip Card Utilities */
+.perspective-1000,
+.perspective-container {
+  perspective: 1400px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+

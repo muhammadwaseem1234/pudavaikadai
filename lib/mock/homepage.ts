@@ -58,33 +58,30 @@ export const MOCK_SECONDARY_BANNER: Banner = {
 
 export const MOCK_TESTIMONIALS: Testimonial[] = [
   {
-    id: "test-1",
-    name: "Dr. Anitha Venkataraman",
-    role: "Classical Dancer & Professor",
-    city: "Chennai",
-    comment: "The Korvai drape from Pudavai Kadai has an authentic weight and purity of silk that reminds me of my grandmother's bridal silks. Truly heirloom quality.",
+    id: "google-rev-1",
+    name: "Swathi Narasimhan",
+    role: "Local Guide · 19 reviews",
+    city: "5 months ago",
+    comment:
+      "Smooth experience buying from Pudavai Kadai! The saree looks exactly like in Picture, and the quality is great. On time delivery is ensured. Will definitely be a returning customer!",
     rating: 5,
-    avatar: "/images/anitha.png",
-    sareePurchased: "Turquoise & Gold Royal Kanchipuram",
   },
   {
-    id: "test-2",
-    name: "Lakshmi Narayanan",
-    role: "Architect",
-    city: "Bengaluru",
-    comment: "Ordered the Azure Gradient silk saree for my sister's reception. The color transition in natural sunlight is breathtaking. Delivery was prompt and packaging was royal.",
+    id: "google-rev-2",
+    name: "sushma sri",
+    role: "2 reviews · 2 photos",
+    city: "a year ago",
+    comment:
+      "Thank you so much Arthi for the saree, it’s very beautiful !! Gorgeous color combination, very soft and elegant!! Arthi you went above and beyond even though there were many hurdles in the way you made sure to deliver the product.",
     rating: 5,
-    avatar: "/images/lakshmi.png",
-    sareePurchased: "Azure Gradient Soft Silk Saree",
   },
   {
-    id: "test-3",
-    name: "Priya Sundaram",
-    role: "Creative Director",
-    city: "Mumbai",
-    comment: "The organza and metallic tissue sarees are featherlight yet so majestic. It is difficult to find handlooms with such refined contemporary aesthetics.",
+    id: "google-rev-3",
+    name: "Immaculate Rajkumar Vimal",
+    role: "9 reviews",
+    city: "11 months ago",
+    comment:
+      "They have an amazing collection of sarees, no compromise on the quality of the fabrics. The best part about purchasing their sarees is their packaging is the best. Kudos to the team. Good job Arthi & Sowmya and the helper.",
     rating: 5,
-    avatar: "/images/priya.png",
-    sareePurchased: "Pearl Ivory Tissue Banarasi Brocade",
   },
 ];

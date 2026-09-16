@@ -28,6 +28,11 @@ export const MAIN_NAV_ITEMS: NavigationItem[] = [
         label: "Lenin Sarees",
         href: "/collections/lenin-sarees",
       },
+      {
+        id: "Cotton Sarees",
+        label: "Cotton Sarees",
+        href: "/collections/cotton-sarees",
+      },
     ],
   },
   {
@@ -38,39 +43,44 @@ export const MAIN_NAV_ITEMS: NavigationItem[] = [
   {
     id: "reviews",
     label: "Reviews",
-    href: "#"
+    href: "/#reviews"
   }
 ];
 
 export const FOOTER_COLUMNS = [
   {
-    title: "Handloom Sarees",
+    title: "Categories",
     links: [
-      { label: "Cotton Sarees", href: "/categories/kanchipuram-silk" },
-      { label: "Banarasi Brocades", href: "/categories/banarasi-silks" },
-      { label: "Tissue & Metallic Silks", href: "/categories/organza-tissue" },
+      { label: "Silk Sarees", href: "/categories/silk-sarees" },
+      { label: "Cotton Silk Sarees", href: "/categories/cotton-silk-sarees" },
+      { label: "Lenin Sarees", href: "/categories/lenin-sarees" },
+      { label: "Cotton Sarees", href: "/categories/cotton-sarees" },
     ],
   },
   {
-    title: "Customer Concierge",
+    title: "Collections",
     links: [
-      { label: "Track Your Order", href: "/account/orders" },
-      { label: "Shipping & Delivery", href: "/shipping" },
-      { label: "Returns & Exchanges", href: "/returns" },
-      { label: "Saree Care Guide", href: "/faq#saree-care" },
-      { label: "Frequently Asked Questions", href: "/faq" },
-      { label: "Contact Stylist", href: "/contact" },
+      { label: "Pure Silk Sarees", href: "/collections/silk-sarees" },
+      { label: "Cotton Silk Sarees", href: "/collections/cotton-silk-sarees" },
+      { label: "Lenin Sarees", href: "/collections/lenin-sarees" },
+      { label: "Cotton Sarees", href: "/collections/cotton-sarees" },
     ],
   },
   {
-    title: "About Pudavai Kadai",
+    title: "Customer Care",
     links: [
-      { label: "Our Heritage & Legacy", href: "/about" },
-      { label: "Artisan Guilds", href: "/about#artisans" },
-      { label: "Sustainability & Craft", href: "/about#sustainability" },
-      { label: "Flagship Showrooms", href: "/contact#locations" },
+      { label: "Our Story", href: "/about" },
+      { label: "Contact Us", href: "/contact" },
+      // { label: "Frequently Asked Questions", href: "/faq" },
+      { label: "Customer Reviews", href: "/#reviews" },
+    ],
+  },
+  {
+    title: "Legal & Compliance",
+    links: [
       { label: "Privacy Policy", href: "/privacy" },
-      { label: "Terms of Service", href: "/terms" },
+      { label: "Terms and Conditions", href: "/terms" },
+      { label: "Delivery and Returns", href: "/delivery-returns" },
     ],
   },
 ];

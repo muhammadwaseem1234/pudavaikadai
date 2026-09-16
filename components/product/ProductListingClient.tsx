@@ -36,8 +36,6 @@ export function ProductListingClient({
     minPrice: undefined,
     maxPrice: undefined,
     inStockOnly: undefined,
-    fabric: undefined,
-    zariType: undefined,
   });
 
   const [visibleCount, setVisibleCount] = useState(8);
@@ -68,18 +66,6 @@ export function ProductListingClient({
 
     if (filters.inStockOnly) {
       result = result.filter((p) => p.stockStatus === "in_stock");
-    }
-
-    if (filters.fabric) {
-      result = result.filter((p) =>
-        p.fabric?.toLowerCase().includes(filters.fabric!.toLowerCase())
-      );
-    }
-
-    if (filters.zariType) {
-      result = result.filter((p) =>
-        p.zariType?.toLowerCase().includes(filters.zariType!.toLowerCase())
-      );
     }
 
     // Sort
@@ -114,8 +100,6 @@ export function ProductListingClient({
       minPrice: undefined,
       maxPrice: undefined,
       inStockOnly: undefined,
-      fabric: undefined,
-      zariType: undefined,
     });
   };
 
@@ -187,8 +171,6 @@ export function ProductListingClient({
 
           {/* Active Filter Tags */}
           {(filters.categorySlug ||
-            filters.fabric ||
-            filters.zariType ||
             filters.inStockOnly ||
             filters.minPrice !== undefined) && (
             <div className="flex flex-wrap items-center gap-2 pt-1">
@@ -201,30 +183,6 @@ export function ProductListingClient({
                   <span>Category: {activeCategory?.name || filters.categorySlug}</span>
                   <button
                     onClick={() => setFilters({ ...filters, categorySlug: undefined })}
-                    className="hover:text-black"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </span>
-              )}
-
-              {filters.fabric && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-stone-100 border border-stone-200 text-xs text-stone-700">
-                  <span>Fabric: {filters.fabric}</span>
-                  <button
-                    onClick={() => setFilters({ ...filters, fabric: undefined })}
-                    className="hover:text-black"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                </span>
-              )}
-
-              {filters.zariType && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-stone-100 border border-stone-200 text-xs text-stone-700">
-                  <span>Zari: {filters.zariType}</span>
-                  <button
-                    onClick={() => setFilters({ ...filters, zariType: undefined })}
                     className="hover:text-black"
                   >
                     <X className="w-3 h-3" />

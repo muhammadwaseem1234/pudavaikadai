@@ -255,8 +255,6 @@ export interface FilterOptions {
   minPrice?: number;
   maxPrice?: number;
   inStockOnly?: boolean;
-  fabric?: string;
-  zariType?: string;
   searchQuery?: string;
 }
 

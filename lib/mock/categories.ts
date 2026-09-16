@@ -28,4 +28,13 @@ export const MOCK_CATEGORIES: Category[] = [
     itemCount: 15,
     featured: true,
   },
+  {
+    id: "cat-4",
+    name: "Cotton Sarees",
+    slug: "cotton-sarees",
+    description: "Discover the perfect blend of tradition and comfort with our exquisite collection of pure cotton sarees.",
+    image: "/images/IMG_9590-scaled.jpg",
+    itemCount: 15,
+    featured: true,
+  },
 ];

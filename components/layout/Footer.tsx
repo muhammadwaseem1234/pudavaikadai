@@ -20,96 +20,20 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-stone-900 text-stone-300 border-t border-stone-800">
-      {/* Top Value Assurance Banner */}
-      <div className="border-b border-stone-800 py-8 bg-stone-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center sm:text-left">
-          <div className="flex items-center sm:items-start gap-4 justify-center sm:justify-start">
-            <ShieldCheck className="w-6 h-6 text-[#b48a44] shrink-0 mt-0.5" />
-            <div>
-              <h4 className="text-xs uppercase tracking-[0.18em] font-semibold text-white">
-                100% Silk Mark Certified
-              </h4>
-              <p className="text-[11px] text-stone-400 mt-0.5">
-                Authentic pure mulberry silk tagged by Central Silk Board
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center sm:items-start gap-4 justify-center sm:justify-start">
-            <Sparkles className="w-6 h-6 text-[#b48a44] shrink-0 mt-0.5" />
-            <div>
-              <h4 className="text-xs uppercase tracking-[0.18em] font-semibold text-white">
-                Master Artisan Handloom
-              </h4>
-              <p className="text-[11px] text-stone-400 mt-0.5">
-                Handcrafted by generational weavers across Tamil Nadu & Varanasi
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center sm:items-start gap-4 justify-center sm:justify-start">
-            <svg
-              className="w-6 h-6 text-[#b48a44] shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.5"
-                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
-              />
-            </svg>
-            <div>
-              <h4 className="text-xs uppercase tracking-[0.18em] font-semibold text-white">
-                Complimentary Insured Shipping
-              </h4>
-              <p className="text-[11px] text-stone-400 mt-0.5">
-                Tamper-proof royal packaging delivered safe across India & worldwide
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center sm:items-start gap-4 justify-center sm:justify-start">
-            <svg
-              className="w-6 h-6 text-[#b48a44] shrink-0 mt-0.5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.5"
-                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-              />
-            </svg>
-            <div>
-              <h4 className="text-xs uppercase tracking-[0.18em] font-semibold text-white">
-                7-Day Easy Exchange
-              </h4>
-              <p className="text-[11px] text-stone-400 mt-0.5">
-                Hassle-free exchanges with dedicated customer concierge assistance
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <footer className="bg-stone-700 text-stone-300 border-t border-stone-800">
       {/* Main Footer Links & Newsletter */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Brand & Mission Column */}
-          <div className="lg:col-span-4 space-y-5">
+          <div className="lg:col-span-3 space-y-5">
             <Link href="/" className="inline-block">
-              <div className="relative h-10 w-44">
+              <div className="relative h-14 w-60 sm:h-16 sm:w-64">
                 <Image
                   src="/images/logo_white.png"
                   alt="Pudavai Kadai - Heritage Handlooms"
                   fill
                   className="object-contain object-left"
+                  sizes="(max-width: 640px) 240px, 256px"
                 />
               </div>
             </Link>
@@ -142,7 +66,7 @@ export function Footer() {
           </div>
 
           {/* Navigation Columns (Data Driven) */}
-          <div className="lg:col-span-5 grid grid-cols-2 sm:grid-cols-3 gap-8">
+          <div className="lg:col-span-6 grid grid-cols-2 sm:grid-cols-4 gap-6">
             {FOOTER_COLUMNS.map((col, idx) => (
               <div key={idx} className="space-y-4">
                 <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-white">
@@ -208,12 +132,16 @@ export function Footer() {
         {/* Bottom Bar: Copyright & Payment Security */}
         <div className="pt-12 mt-12 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-stone-500">
           <p>© {new Date().getFullYear()} Pudavai Kadai. All rights reserved. Handcrafted Heritage Silks.</p>
-          <div className="flex items-center gap-4">
-            <span>Visa</span>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link href="/privacy" className="hover:text-stone-300 transition-colors">
+              Privacy Policy
+            </Link>
             <span>•</span>
-            <span>MasterCard</span>
+            <Link href="/terms" className="hover:text-stone-300 transition-colors">
+              Terms of Service
+            </Link>
             <span>•</span>
-            <span>UPI / NetBanking</span>
+            <span>UPI / Cards / NetBanking</span>
             <span>•</span>
             <span>Cash on Delivery</span>
           </div>

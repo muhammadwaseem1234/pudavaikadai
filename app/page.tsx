@@ -1,6 +1,7 @@
 import { getHomepageData } from "@/lib/api/homepage";
 import { HeroSlider } from "@/components/home/HeroSlider";
 import { CategoryGrid } from "@/components/home/CategoryGrid";
+import { AtelierShowcase } from "@/components/home/AtelierShowcase";
 import { FeaturedSection } from "@/components/home/FeaturedSection";
 import { PromotionalBanner } from "@/components/home/PromotionalBanner";
 import { StorySection } from "@/components/home/StorySection";
@@ -21,8 +22,13 @@ export default async function HomePage() {
       {/* 2. Featured Categories Grid */}
       <CategoryGrid categories={data.featuredCategories} />
 
-
       <PromotionalBanner banner={data.promotionalBanner} />
+
+      {/* Atelier Virtual Drape & Micro-Weave Showcase */}
+      <AtelierShowcase />
+
+      {/* Promotional Banner */}
+
 
       {/* 3. Handwoven Masterpieces Featured Section */}
       <FeaturedSection
