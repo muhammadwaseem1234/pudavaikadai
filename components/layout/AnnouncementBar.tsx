@@ -58,8 +58,6 @@ export function AnnouncementBar() {
         {/* Right support info */}
         <div className="hidden lg:flex items-center gap-4 text-stone-400 text-[10px]">
           <span>Free Shipping Across india</span>
-          <span className="text-stone-600">|</span>
-          <span>INR (₹)</span>
         </div>
       </div>
     </div>

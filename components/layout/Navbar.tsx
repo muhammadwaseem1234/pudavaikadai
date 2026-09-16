@@ -74,9 +74,8 @@ export default function Navbar() {
     <>
       <header className="sticky top-0 left-0 right-0 z-40 transition-all duration-300">
         <nav
-          className={`w-full bg-white border-b border-stone-200 transition-all duration-300 ${
-            isScrolled ? "h-16 shadow-sm" : "h-20"
-          }`}
+          className={`w-full bg-white border-b border-stone-200 transition-all duration-300 ${isScrolled ? "h-16 shadow-sm" : "h-20"
+            }`}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
             {/* Left: Mobile Hamburger & Desktop Nav */}
@@ -127,9 +126,8 @@ export default function Navbar() {
                         >
                           <span>{item.label}</span>
                           <ChevronDown
-                            className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-200 ${
-                              collectionsOpen ? "rotate-180 text-stone-900" : ""
-                            }`}
+                            className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-200 ${collectionsOpen ? "rotate-180 text-stone-900" : ""
+                              }`}
                           />
                         </Link>
 
@@ -174,16 +172,16 @@ export default function Navbar() {
 
             {/* Right: Actions (Search, Wishlist, Account, Cart) */}
             <div className="flex items-center gap-1 sm:gap-2">
-              {/* Search Trigger */}
-              <button
-                type="button"
-                onClick={() => setSearchOpen(true)}
-                className="p-2.5 text-stone-600 hover:text-stone-950 transition-colors rounded-full hover:bg-stone-100"
-                aria-label="Search"
-                title="Search"
-              >
-                <Search className="w-4 h-4" />
-              </button>
+              {/* Search Trigger
+                <button
+                  type="button"
+                  onClick={() => setSearchOpen(true)}
+                  className="p-2.5 text-stone-600 hover:text-stone-950 transition-colors rounded-full hover:bg-stone-100"
+                  aria-label="Search"
+                  title="Search"
+                >
+                  <Search className="w-4 h-4" />
+                </button> */}
 
               {/* Wishlist Link with Badge */}
               <Link
