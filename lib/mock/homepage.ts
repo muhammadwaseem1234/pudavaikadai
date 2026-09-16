@@ -42,8 +42,8 @@ export const MOCK_PROMO_BANNER: Banner = {
   subtitle: "Embrace heirloom South Indian opulence with our curated edit of ceremonial Kanchipuram and Banarasi handloom creations.",
   tag: "Limited Festive Curation",
   ctaText: "DISCOVER THE EDIT",
-  ctaLink: "/collections/royal-festive",
-  image: "/images/festive_image.jpg",
+  ctaLink: "/collections",
+  image: "/images/festive_edits_banner.png",
 };
 
 export const MOCK_SECONDARY_BANNER: Banner = {

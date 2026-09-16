@@ -7,64 +7,14 @@ import {
   ArrowRight,
   RotateCw,
   RotateCcw,
-  ZoomIn,
-  Eye,
   Sparkles,
 } from "lucide-react";
 import { ATELIER_SAREES, AtelierSaree } from "@/lib/data/atelierSarees";
-import { WeaveMagnifierModal } from "./WeaveMagnifierModal";
-import { SareeDetailModal } from "./SareeDetailModal";
-import { useCartStore } from "@/lib/store/useCartStore";
 import { playTactileChime } from "@/lib/utils/sound";
-import { Product } from "@/lib/types";
-
-function mapAtelierToProduct(saree: AtelierSaree, selectedColor?: string, blouseStyle?: string): Product {
-  return {
-    id: saree.id,
-    name: saree.name,
-    slug: saree.id,
-    description: saree.tagline,
-    shortDescription: saree.tagline,
-    price: saree.priceINR,
-    salePrice: saree.priceINR,
-    currency: "INR",
-    sku: `ATELIER-${saree.id.toUpperCase()}`,
-    stockStatus: "in_stock",
-    stockQuantity: 5,
-    featured: true,
-    badge: "Atelier Masterpiece",
-    fabric: saree.silkGrade,
-    zariType: saree.zariGrade,
-    rating: saree.rating,
-    reviewsCount: saree.reviewsCount,
-    category: {
-      id: "cat-atelier",
-      name: "Handpicked Atelier",
-      slug: "silk-sarees",
-      description: "Heirloom Pure Silk Sarees",
-    },
-    categories: [],
-    collections: ["handpicked-atelier"],
-    images: [
-      { id: `img-${saree.id}-1`, url: saree.modelImage, alt: saree.name, isPrimary: true },
-      { id: `img-${saree.id}-2`, url: saree.fabricDetailImage, alt: `${saree.name} Weave Detail` },
-    ],
-    attributes: [
-      { name: "Craft Origin", value: saree.origin },
-      { name: "Weave Technique", value: saree.craftType },
-      { name: "Weave Duration", value: saree.timeToWeave },
-      { name: "Colorway", value: selectedColor || saree.colorVariants[0]?.name || "Original" },
-      { name: "Blouse Styling", value: blouseStyle || saree.blouseType },
-    ],
-  };
-}
 
 export function AtelierShowcase() {
   const sarees = ATELIER_SAREES;
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
-  const [magnifierSaree, setMagnifierSaree] = useState<AtelierSaree | null>(null);
-  const [detailSaree, setDetailSaree] = useState<AtelierSaree | null>(null);
-  const { addItem, openDrawer } = useCartStore();
 
   const leftPair = sarees.slice(0, 2);
   const rightPair = sarees.slice(2, 4);
@@ -88,17 +38,6 @@ export function AtelierShowcase() {
       nextState[s.id] = targetState;
     });
     setFlippedCards(nextState);
-  };
-
-  const handleAddToCart = (
-    saree: AtelierSaree,
-    selectedColor?: string,
-    blouseStyle?: string,
-  ) => {
-    playTactileChime("add");
-    const product = mapAtelierToProduct(saree, selectedColor, blouseStyle);
-    addItem(product, undefined, 1);
-    openDrawer();
   };
 
   const renderCard = (model: AtelierSaree) => {
@@ -127,10 +66,7 @@ export function AtelierShowcase() {
               WebkitBackfaceVisibility: "hidden",
               transform: "rotateY(0deg) translateZ(1px)",
             }}
-            onClick={() => {
-              playTactileChime("click");
-              setDetailSaree(model);
-            }}
+            onClick={() => handleToggleFlip(model.id)}
           >
             {/* Model Image with smooth zoom on hover */}
             <Image
@@ -167,12 +103,13 @@ export function AtelierShowcase() {
 
           {/* ================= BACK FACE: 3D FLIPPED WEAVE TEXTURE & SPECIFICATIONS ================= */}
           <div
-            className="backface-hidden rotate-y-180 absolute inset-0 w-full h-full rounded-2xl overflow-hidden border border-[#dfb873]/50 bg-stone-950 shadow-[0_20px_45px_rgba(0,0,0,0.5)] flex flex-col justify-between p-4 sm:p-5 text-white"
+            className="backface-hidden rotate-y-180 absolute inset-0 w-full h-full rounded-2xl overflow-hidden border border-[#dfb873]/50 bg-stone-950 shadow-[0_20px_45px_rgba(0,0,0,0.5)] flex flex-col justify-between p-4 sm:p-5 text-white cursor-pointer"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
               transform: "rotateY(180deg) translateZ(1px)",
             }}
+            onClick={() => handleToggleFlip(model.id)}
           >
             {/* High-Resolution Macro Silk Weave Texture Background */}
             <div className="absolute inset-0 z-0">
@@ -225,7 +162,7 @@ export function AtelierShowcase() {
               </div>
             </div>
 
-            {/* Bottom Actions: Inspect Loupe & View Details */}
+            {/* Bottom Actions: Price & Flip to Drape */}
             <div className="relative z-10 space-y-2 pt-2 border-t border-white/15">
               <div className="flex items-baseline justify-between px-0.5">
                 <span className="text-[10px] text-stone-400 font-mono uppercase">Craft Price</span>
@@ -234,32 +171,14 @@ export function AtelierShowcase() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    playTactileChime("zoom");
-                    setMagnifierSaree(model);
-                  }}
-                  className="py-1.5 px-2 bg-white/15 hover:bg-white text-white hover:text-stone-900 rounded-lg text-[11px] font-medium flex items-center justify-center gap-1 transition-all duration-200 active:scale-95 cursor-pointer border border-white/20"
-                >
-                  <ZoomIn className="w-3 h-3 text-amber-300" />
-                  <span>Loupe</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    playTactileChime("click");
-                    setDetailSaree(model);
-                  }}
-                  className="py-1.5 px-2 bg-[#927238] hover:bg-[#7b5f2c] text-white rounded-lg text-[11px] font-medium flex items-center justify-center gap-1 transition-all duration-200 active:scale-95 cursor-pointer shadow-sm border border-[#dfb873]/30"
-                >
-                  <Eye className="w-3 h-3" />
-                  <span>Details</span>
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={(e) => handleToggleFlip(model.id, e)}
+                className="w-full py-1.5 px-3 bg-white/15 hover:bg-[#927238] text-white rounded-lg text-[11px] font-medium flex items-center justify-center gap-1.5 transition-all duration-200 active:scale-95 cursor-pointer border border-white/20 hover:border-[#dfb873]"
+              >
+                <RotateCcw className="w-3 h-3 text-amber-300" />
+                <span>Flip to Drape</span>
+              </button>
             </div>
           </div>
         </div>
@@ -330,20 +249,6 @@ export function AtelierShowcase() {
           </div>
         </div>
       </div>
-
-      {/* Interactive Modals */}
-      <WeaveMagnifierModal
-        saree={magnifierSaree}
-        onClose={() => setMagnifierSaree(null)}
-        onAddToCart={handleAddToCart}
-      />
-
-      <SareeDetailModal
-        saree={detailSaree}
-        onClose={() => setDetailSaree(null)}
-        onAddToCart={handleAddToCart}
-        onOpenMagnifier={(s) => setMagnifierSaree(s)}
-      />
     </section>
   );
 }
