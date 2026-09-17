@@ -184,7 +184,7 @@ export default function CartPage() {
                         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
                           <div>
                             <span className="text-[10px] uppercase tracking-wider text-stone-400">
-                              {item.product.category.name}
+                              {item.product.category?.name || "Sarees"}
                             </span>
                             <h3 className="text-sm font-serif font-medium text-stone-900 hover:text-[#927238] transition-colors">
                               <Link href={`/products/${item.product.slug}`}>

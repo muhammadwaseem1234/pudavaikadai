@@ -134,7 +134,7 @@ export function ProductCard({ product, className = "", priority = false }: Produ
       <div className="p-3.5 flex-1 flex flex-col justify-between">
         <div>
           <p className="text-[10px] uppercase tracking-[0.15em] text-stone-400 truncate">
-            {product.category.name}
+            {product.category?.name || "Sarees"}
           </p>
           <h3 className="text-xs font-medium text-stone-900 mt-1 line-clamp-1 hover:text-[#927238] transition-colors">
             <Link href={`/products/${product.slug}`}>{product.name}</Link>

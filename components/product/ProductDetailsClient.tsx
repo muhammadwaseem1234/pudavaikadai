@@ -68,7 +68,7 @@ export function ProductDetailsClient({
       <Breadcrumbs
         items={[
           { label: "Shop", href: "/products" },
-          { label: product.category.name, href: `/categories/${product.category.slug}` },
+          { label: product.category?.name || "Sarees", href: product.category?.slug ? `/categories/${product.category.slug}` : "/products" },
           { label: product.name },
         ]}
       />
@@ -85,10 +85,10 @@ export function ProductDetailsClient({
           {/* Category & Badge */}
           <div className="flex items-center justify-between">
             <Link
-              href={`/categories/${product.category.slug}`}
+              href={product.category?.slug ? `/categories/${product.category.slug}` : "/products"}
               className="text-[11px] uppercase tracking-[0.2em] font-medium text-stone-500 hover:text-stone-900 transition-colors"
             >
-              {product.category.name}
+              {product.category?.name || "Sarees"}
             </Link>
             {product.badge && (
               <span className="px-2.5 py-0.5 text-[10px] uppercase tracking-wider font-semibold bg-stone-900 text-white">
@@ -470,7 +470,7 @@ export function ProductDetailsClient({
               </h2>
             </div>
             <Link
-              href={`/categories/${product.category.slug}`}
+              href={product.category?.slug ? `/categories/${product.category.slug}` : "/products"}
               className="text-xs uppercase tracking-wider font-semibold text-stone-900 hover:underline"
             >
               View Category

@@ -8,12 +8,14 @@ import { getWCCategories } from "@/lib/wordpress/woocommerce";
 export function resolveCollectionSlug(slug: string): string {
   const s = slug.toLowerCase().trim();
   if (
-    s === "cotton-sarees" ||
-    s === "cotton" ||
     s === "cotton-silk" ||
-    s === "cotton-lenin"
+    s === "cotton-lenin" ||
+    s === "cotton-silk-sarees"
   ) {
     return "cotton-silk-sarees";
+  }
+  if (s === "cotton-sarees" || s === "cotton") {
+    return "cotton-sarees";
   }
   if (
     s === "slick-sarees" ||

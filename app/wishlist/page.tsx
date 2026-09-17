@@ -115,7 +115,7 @@ export default function WishlistPage() {
                   {/* Info */}
                   <div className="p-3.5 space-y-1">
                     <span className="text-[10px] uppercase tracking-wider text-stone-400 truncate block">
-                      {product.category.name}
+                      {product.category?.name || "Sarees"}
                     </span>
                     <h3 className="text-xs font-medium text-stone-900 line-clamp-1 hover:text-[#927238]">
                       <Link href={`/products/${product.slug}`}>{product.name}</Link>

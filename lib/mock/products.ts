@@ -20,8 +20,8 @@ export const MOCK_PRODUCTS: Product[] = [
     zariType: "Fine Silver Zari",
     rating: 4.9,
     reviewsCount: 42,
-    category: MOCK_CATEGORIES[3], // Soft Silks
-    categories: [MOCK_CATEGORIES[3], MOCK_CATEGORIES[0]],
+    category: MOCK_CATEGORIES[0], // Silk Sarees
+    categories: [MOCK_CATEGORIES[0]],
     collections: ["new-arrivals", "summer-soiree"],
     images: [
       { id: "img-1", url: "/images/prod-1.jpg", alt: "Azure Gradient Soft Silk Saree - Front View", isPrimary: true },
@@ -109,8 +109,8 @@ export const MOCK_PRODUCTS: Product[] = [
     zariType: "Pure Silver Gilded Gold Zari",
     rating: 5.0,
     reviewsCount: 31,
-    category: MOCK_CATEGORIES[0], // Kanchipuram
-    categories: [MOCK_CATEGORIES[0], MOCK_CATEGORIES[5]],
+    category: MOCK_CATEGORIES[0], // Silk Sarees
+    categories: [MOCK_CATEGORIES[0]],
     collections: ["bridal-muhurtham", "royal-festive", "heritage-archive"],
     images: [
       { id: "img-2-1", url: "/images/prod-2.jpg", alt: "Turquoise Kanchipuram Silk - Full Drape", isPrimary: true },
@@ -232,7 +232,7 @@ export const MOCK_PRODUCTS: Product[] = [
     zariType: "Tested Zari",
     rating: 4.7,
     reviewsCount: 16,
-    category: MOCK_CATEGORIES[4], // Linen & Tussar
+    category: MOCK_CATEGORIES[0], // Silk Sarees
     collections: ["heritage-archive"],
     images: [
       { id: "img-5-1", url: "/images/prod-5.jpg", alt: "Arni Silk Double Weave Saree", isPrimary: true },
@@ -262,8 +262,8 @@ export const MOCK_PRODUCTS: Product[] = [
     zariType: "Pure Silver Gold-Dipped Zari",
     rating: 5.0,
     reviewsCount: 38,
-    category: MOCK_CATEGORIES[0], // Kanchipuram
-    categories: [MOCK_CATEGORIES[0], MOCK_CATEGORIES[5]],
+    category: MOCK_CATEGORIES[0], // Silk Sarees
+    categories: [MOCK_CATEGORIES[0]],
     collections: ["bridal-muhurtham", "royal-festive"],
     images: [
       { id: "img-6-1", url: "/images/prod-6.jpg", alt: "Royal Emerald Kanchipuram Bridal Silk", isPrimary: true },
@@ -296,7 +296,7 @@ export const MOCK_PRODUCTS: Product[] = [
     rating: 4.9,
     reviewsCount: 52,
     category: MOCK_CATEGORIES[0],
-    categories: [MOCK_CATEGORIES[0], MOCK_CATEGORIES[5]],
+    categories: [MOCK_CATEGORIES[0]],
     collections: ["bridal-muhurtham", "royal-festive"],
     images: [
       { id: "img-7-1", url: "/images/prod-7.jpg", alt: "Crimson Red Muhurtham Saree", isPrimary: true },
@@ -446,7 +446,7 @@ export const MOCK_PRODUCTS: Product[] = [
     zariType: "Muted Gold Zari",
     rating: 5.0,
     reviewsCount: 8,
-    category: MOCK_CATEGORIES[4],
+    category: MOCK_CATEGORIES[3], // Cotton Sarees
     collections: ["heritage-archive"],
     images: [
       { id: "img-12-1", url: "/images/Muslin-Silk-Jamdani-1.png", alt: "Muslin Silk Jamdani Saree", isPrimary: true },

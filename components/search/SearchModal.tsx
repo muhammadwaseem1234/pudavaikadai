@@ -162,7 +162,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                       />
                     </div>
                     <span className="text-[10px] uppercase tracking-wider text-stone-400 truncate">
-                      {product.category.name}
+                      {product.category?.name || "Sarees"}
                     </span>
                     <h4 className="text-xs font-medium text-stone-900 group-hover:text-black line-clamp-1 mt-0.5">
                       {product.name}

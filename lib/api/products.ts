@@ -51,8 +51,8 @@ export async function getProducts(
       const targetCat = filters.categorySlug;
       list = list.filter(
         (p) =>
-          isSlugMatch(p.category.slug, targetCat) ||
-          p.categories?.some((c) => isSlugMatch(c.slug, targetCat)) ||
+          isSlugMatch(p.category?.slug, targetCat) ||
+          p.categories?.some((c) => isSlugMatch(c?.slug, targetCat)) ||
           p.collections?.some((col) => isSlugMatch(col, targetCat))
       );
     }
@@ -62,8 +62,8 @@ export async function getProducts(
       list = list.filter(
         (p) =>
           p.collections?.some((col) => isSlugMatch(col, targetCol)) ||
-          isSlugMatch(p.category.slug, targetCol) ||
-          p.categories?.some((c) => isSlugMatch(c.slug, targetCol))
+          isSlugMatch(p.category?.slug, targetCol) ||
+          p.categories?.some((c) => isSlugMatch(c?.slug, targetCol))
       );
     }
 
@@ -86,7 +86,7 @@ export async function getProducts(
           p.name.toLowerCase().includes(q) ||
           p.description.toLowerCase().includes(q) ||
           p.fabric?.toLowerCase().includes(q) ||
-          p.category.name.toLowerCase().includes(q)
+          (p.category?.name && p.category.name.toLowerCase().includes(q))
       );
     }
   }
@@ -180,7 +180,7 @@ export async function getRelatedProducts(
   const { products } = await getProducts();
   const related = products.filter((p) => {
     if (p.slug === currentSlug) return false;
-    if (categorySlug && isSlugMatch(p.category.slug, categorySlug)) return true;
+    if (categorySlug && isSlugMatch(p.category?.slug, categorySlug)) return true;
     return true;
   });
   return related.slice(0, limit);

@@ -47,8 +47,8 @@ export function ProductListingClient({
     if (filters.categorySlug) {
       result = result.filter(
         (p) =>
-          p.category.slug === filters.categorySlug ||
-          p.categories?.some((c) => c.slug === filters.categorySlug)
+          p.category?.slug === filters.categorySlug ||
+          p.categories?.some((c) => c?.slug === filters.categorySlug)
       );
     }
 

@@ -20,7 +20,7 @@ export const MAIN_NAV_ITEMS: NavigationItem[] = [
       {
         id: "Cotton Silk Sarees",
         label: "Cotton Silk Sarees",
-        href: "/collections/cotton-sarees",
+        href: "/collections/cotton-silk-sarees",
         badge: "New",
       },
       {

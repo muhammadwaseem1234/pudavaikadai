@@ -43,7 +43,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const relatedProducts = await getRelatedProducts(product.slug, product.category.slug, 4);
+  const relatedProducts = await getRelatedProducts(product.slug, product.category?.slug, 4);
 
   return (
     <div className="bg-white min-h-screen">

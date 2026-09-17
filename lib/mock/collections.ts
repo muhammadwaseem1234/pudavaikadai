@@ -28,4 +28,13 @@ export const MOCK_COLLECTIONS: Collection[] = [
     heroTagline: "Cotton Silk Sarees",
     featured: true,
   },
+  {
+    id: "col-4",
+    name: "Cotton Sarees",
+    slug: "cotton-sarees",
+    description: "Pure Daily Comfort. Crisp handloom weaves for effortless poise and daily grace.",
+    bannerImage: "/images/cotton_sarees_grid.png",
+    heroTagline: "Daily Comfort",
+    featured: true,
+  },
 ];
