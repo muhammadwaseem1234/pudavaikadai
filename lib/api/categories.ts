@@ -7,7 +7,7 @@ import { adaptWCCategory } from "@/lib/wordpress/adapter";
  * Get all categories (supports live WooCommerce or mock fallback)
  */
 export async function getCategories(): Promise<Category[]> {
-  if (process.env.NEXT_PUBLIC_DATA_SOURCE === "live") {
+  if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
     try {
       const wcCategories = await getWCCategories();
       const valid = wcCategories.filter(

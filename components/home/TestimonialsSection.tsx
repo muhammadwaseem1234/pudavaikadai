@@ -38,7 +38,7 @@ export function TestimonialsSection({ testimonials }: TestimonialsSectionProps) 
           </div>
 
           <h2 className="text-2xl sm:text-4xl font-serif text-stone-900">
-            Treasured By Connoisseurs
+            Testimonials
           </h2>
           <p className="text-xs sm:text-sm text-stone-500 font-light">
             Authentic reflections from patrons who have welcomed our handlooms into their most cherished memories.

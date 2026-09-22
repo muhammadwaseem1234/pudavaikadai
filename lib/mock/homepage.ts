@@ -38,9 +38,9 @@ export const MOCK_HERO_SLIDES: Banner[] = [
 
 export const MOCK_PROMO_BANNER: Banner = {
   id: "promo-1",
-  title: "FESTIVE CELEBRATIONS 2026",
-  subtitle: "Embrace heirloom South Indian opulence with our curated edit of ceremonial Kanchipuram and Banarasi handloom creations.",
-  tag: "Limited Festive Curation",
+  title: "FESTIVE CURATIONS",
+  subtitle: "",
+  tag: "Limited Edition",
   ctaText: "DISCOVER THE EDIT",
   ctaLink: "/collections",
   image: "/images/festive_edits_banner.png",

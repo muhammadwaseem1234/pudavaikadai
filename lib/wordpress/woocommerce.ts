@@ -5,7 +5,7 @@
 
 const WOOCOMMERCE_API_URL =
   process.env.WOOCOMMERCE_API_URL ||
-  "https://maroon-peafowl-103168.hostingersite.com/wp-json/wc/v3";
+  "https://deeppink-ibis-405628.hostingersite.com/wp-json/wc/v3";
 const CONSUMER_KEY =
   process.env.WOOCOMMERCE_CONSUMER_KEY ||
   "ck_c2b059fe3a203a17cebc79a7b516cf6c74ebb630";

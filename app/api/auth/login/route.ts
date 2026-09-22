@@ -3,8 +3,9 @@ import { getWCCustomerByEmail } from "@/lib/wordpress/woocommerce";
 import { adaptWCCustomer } from "@/lib/wordpress/adapter";
 
 const WP_URL =
+  process.env.WORDPRESS_URL ||
   process.env.NEXT_PUBLIC_WORDPRESS_URL ||
-  "https://maroon-peafowl-103168.hostingersite.com";
+  "https://deeppink-ibis-405628.hostingersite.com";
 
 /**
  * Natively verifies username/email and password against WordPress
@@ -86,7 +87,7 @@ export async function POST(req: Request) {
 
     const cleanEmail = email.trim().toLowerCase();
 
-    if (process.env.NEXT_PUBLIC_DATA_SOURCE === "live") {
+    if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
       // 1. Verify password strictly with WordPress
       const verification = await verifyWordPressPassword(cleanEmail, password);
 

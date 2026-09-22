@@ -15,11 +15,8 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 gap-4">
           <div>
-            <span className="text-[11px] uppercase tracking-[0.25em] font-semibold text-[#927238]">
+            <h2 className="text-2xl uppercase tracking-[0.25em] font-semibold text-[#927238]">
               The Handloom Vault
-            </span>
-            <h2 className="text-2xl sm:text-4xl font-serif text-stone-900 mt-1">
-              Discover Everyday Traditions
             </h2>
           </div>
           <Link

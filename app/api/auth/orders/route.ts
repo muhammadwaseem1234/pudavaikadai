@@ -9,7 +9,7 @@ export async function GET(req: Request) {
     const customerId = searchParams.get("customerId");
     const email = searchParams.get("email");
 
-    if (process.env.NEXT_PUBLIC_DATA_SOURCE === "live") {
+    if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
       const parsedId =
         customerId && !isNaN(parseInt(customerId, 10))
           ? parseInt(customerId, 10)

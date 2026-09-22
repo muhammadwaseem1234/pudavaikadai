@@ -5,6 +5,14 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "deeppink-ibis-405628.hostingersite.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.hostingersite.com",
+      },
+      {
+        protocol: "https",
         hostname: "maroon-peafowl-103168.hostingersite.com",
       },
       {

@@ -3,12 +3,12 @@ import { NavigationItem } from "@/lib/types";
 export const MAIN_NAV_ITEMS: NavigationItem[] = [
   {
     id: "shop",
-    label: "Shop",
+    label: "Collections",
     href: "/products",
   },
   {
     id: "collections",
-    label: "Collections",
+    label: "Shop",
     href: "/collections",
     children: [
       {
@@ -86,6 +86,7 @@ export const FOOTER_COLUMNS = [
 ];
 
 export const ANNOUNCEMENTS = [
-  "Pudavakadai",
-  "pudavakadai",
+  "Cash On Delivery Available",
+  "10 % Discount on every first purchase",
+  "Free Shipping Across India"
 ];

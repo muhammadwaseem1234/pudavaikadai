@@ -57,7 +57,7 @@ export async function getCollectionBySlug(slug: string): Promise<Collection | nu
   }
 
   // 2. If not found in static list, check live WooCommerce categories
-  if (process.env.NEXT_PUBLIC_DATA_SOURCE === "live") {
+  if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
     try {
       const wcCategories = await getWCCategories();
       const matched = wcCategories.find((c) => {

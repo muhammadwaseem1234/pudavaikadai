@@ -11,7 +11,7 @@ import { resolveCollectionSlug } from "@/lib/api/collections";
  * Helper to fetch base product list from either WooCommerce or Mock
  */
 async function getBaseProducts(): Promise<Product[]> {
-  if (process.env.NEXT_PUBLIC_DATA_SOURCE === "live") {
+  if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
     try {
       const wcProducts = await getWCProducts();
       if (wcProducts && wcProducts.length > 0) {
@@ -123,7 +123,7 @@ export async function getProducts(
  * Get a single product by its slug
  */
 export async function getProductBySlug(slug: string): Promise<Product | null> {
-  if (process.env.NEXT_PUBLIC_DATA_SOURCE === "live") {
+  if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
     try {
       const wcProduct = await getWCProductBySlug(slug);
       if (wcProduct) {

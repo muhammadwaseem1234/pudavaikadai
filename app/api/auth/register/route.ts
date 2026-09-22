@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     const cleanEmail = email.trim().toLowerCase();
 
     // Check if we are in live or mock mode
-    if (process.env.NEXT_PUBLIC_DATA_SOURCE === "live") {
+    if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
       try {
         const wcCustomer = await createWCCustomer({
           email: cleanEmail,

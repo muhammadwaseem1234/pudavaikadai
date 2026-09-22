@@ -1,64 +1,57 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
+import Link from "next/link";
 import { ANNOUNCEMENTS } from "@/lib/constants/navigation";
-import { ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react";
+import { Phone } from "lucide-react";
 
 export function AnnouncementBar() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const items = [
+    ...ANNOUNCEMENTS.map((text) => ({
+      text,
+      href: "/products",
+      isPhone: false,
+    })),
+  ];
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % ANNOUNCEMENTS.length);
-    }, 2500);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + ANNOUNCEMENTS.length) % ANNOUNCEMENTS.length);
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % ANNOUNCEMENTS.length);
-  };
+  // Repeat items 4 times to ensure seamless infinite loop across all viewport widths
+  const repeatedItems = [...items, ...items, ...items, ...items];
 
   return (
-    <div className="bg-[#F4EDE2] text-[#6B5845] text-[11px] uppercase tracking-[0.18em] py-2 px-4 border-b border-[#DED2C1]">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* Left assurance badge */}
-        <div className="hidden lg:flex items-center gap-1.5 text-stone-400 text-[10px]">
-          {/* <ShieldCheck className="w-3.5 h-3.5 text-[#b48a44]" /> */}
-          <span>Call/Whatsapp +91 98402 48980</span>
-        </div>
+    <div className="relative w-full overflow-hidden bg-[#F4EDE2] text-[#6B5845] text-[10px] sm:text-[11px] uppercase tracking-[0.2em] py-2 border-b border-[#DED2C1] select-none group">
+      {/* Soft gradient edge fade on left */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-16 bg-gradient-to-r from-[#F4EDE2] to-transparent z-10" />
 
-        {/* Center rotating promo */}
-        <div className="flex-1 flex items-center justify-center gap-3 text-center">
-          <button
-            onClick={handlePrev}
-            className="p-0.5 hover:text-stone-900 transition-colors"
-            aria-label="Previous announcement"
-          >
-            <ChevronLeft className="w-3 h-3" />
-          </button>
-          <span
-            key={currentIndex}
-            className="truncate max-w-[280px] sm:max-w-md font-medium text-stone-900 transition-opacity duration-300 animate-in fade-in"
-          >
-            {ANNOUNCEMENTS[currentIndex]}
-          </span>
-          <button
-            onClick={handleNext}
-            className="p-0.5 hover:text-stone-900 transition-colors"
-            aria-label="Next announcement"
-          >
-            <ChevronRight className="w-3 h-3" />
-          </button>
-        </div>
+      {/* Soft gradient edge fade on right */}
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-16 bg-gradient-to-l from-[#F4EDE2] to-transparent z-10" />
 
-        {/* Right support info */}
-        <div className="hidden lg:flex items-center gap-4 text-stone-400 text-[10px]">
-          <span>Free Shipping Across india</span>
-        </div>
+      {/* Smooth Marquee Track Moving Left to Right */}
+      <div className="animate-marquee-ltr flex items-center">
+        {repeatedItems.map((item, idx) => (
+          <div key={idx} className="flex items-center shrink-0">
+            <span className="mx-4 sm:mx-6 text-[#927238]/60 text-[10px] select-none">
+              ✦
+            </span>
+            {item.isPhone ? (
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-stone-800 hover:text-[#927238] transition-colors flex items-center gap-1.5"
+              >
+                <Phone className="w-3 h-3 text-[#927238]" />
+                <span>{item.text}</span>
+              </a>
+            ) : (
+              <Link
+                href={item.href}
+                className="font-medium text-stone-800 hover:text-[#927238] transition-colors"
+              >
+                {item.text}
+              </Link>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

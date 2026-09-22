@@ -14,7 +14,7 @@ export async function PUT(req: Request) {
       );
     }
 
-    if (process.env.NEXT_PUBLIC_DATA_SOURCE === "live") {
+    if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
       const updatePayload: any = {};
 
       if (name) {

@@ -10,7 +10,7 @@ let dynamicOrders = [...MOCK_ORDERS];
  * Get all customer orders (live WooCommerce or mock fallback)
  */
 export async function getOrders(customerId?: string, email?: string): Promise<Order[]> {
-  if (process.env.NEXT_PUBLIC_DATA_SOURCE === "live") {
+  if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
     try {
       const parsedId =
         customerId && !isNaN(parseInt(customerId, 10))
@@ -39,7 +39,7 @@ export async function getOrders(customerId?: string, email?: string): Promise<Or
  * Get single order by ID or order number
  */
 export async function getOrderById(orderIdOrNumber: string): Promise<Order | null> {
-  if (process.env.NEXT_PUBLIC_DATA_SOURCE === "live") {
+  if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
     const cleanId = orderIdOrNumber.replace(/^WC-/, "").replace(/^ord-/, "");
     if (!isNaN(parseInt(cleanId, 10))) {
       try {
@@ -70,7 +70,7 @@ export async function createOrder(
   let orderNumber = `PK-2026-${randomSuffix}`;
   let orderId = `ord-${timestamp}`;
 
-  if (process.env.NEXT_PUBLIC_DATA_SOURCE === "live") {
+  if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
