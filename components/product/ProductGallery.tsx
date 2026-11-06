@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { ProductImage } from "@/lib/types";
 
 interface ProductGalleryProps {
@@ -25,13 +25,12 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
               key={img.id || idx}
               type="button"
               onClick={() => setSelectedIdx(idx)}
-              className={`relative w-16 h-22 sm:w-20 sm:h-26 shrink-0 border transition-all duration-200 overflow-hidden cursor-pointer ${
-                selectedIdx === idx
+              className={`relative w-16 h-22 sm:w-20 sm:h-26 shrink-0 border transition-all duration-200 overflow-hidden cursor-pointer ${selectedIdx === idx
                   ? "border-stone-900 ring-1 ring-stone-900"
                   : "border-stone-200 hover:border-stone-400 opacity-70 hover:opacity-100"
-              }`}
+                }`}
             >
-              <Image
+              <SafeImage
                 src={img.url}
                 alt={`${productName} thumbnail ${idx + 1}`}
                 fill
@@ -45,7 +44,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
       {/* Main High-Res Image Display */}
       <div className="relative aspect-[3/4] w-full bg-stone-100 border border-stone-200 overflow-hidden select-none">
-        <Image
+        <SafeImage
           key={activeImage.url}
           src={activeImage.url}
           alt={activeImage.alt || productName}

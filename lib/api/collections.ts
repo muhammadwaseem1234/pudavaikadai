@@ -1,5 +1,4 @@
 import { Collection } from "@/lib/types";
-import { MOCK_COLLECTIONS } from "@/lib/mock/collections";
 import { getWCCategories } from "@/lib/wordpress/woocommerce";
 
 /**
@@ -32,60 +31,62 @@ export function resolveCollectionSlug(slug: string): string {
 }
 
 /**
- * Get all curated collections
+ * Get all collections strictly from live WooCommerce categories
  */
 export async function getCollections(): Promise<Collection[]> {
-  return [...MOCK_COLLECTIONS];
+  try {
+    const wcCategories = await getWCCategories();
+    return wcCategories
+      .filter((c) => c.slug !== "uncategorized" || c.count > 0)
+      .map((cat) => ({
+        id: `wc-col-${cat.id}`,
+        name: cat.name,
+        slug: cat.slug,
+        description: cat.description || `Explore our authentic, handcrafted curation of ${cat.name}.`,
+        bannerImage: cat.image?.src || undefined,
+        heroTagline: "Handloom Heritage Edit",
+        featured: true,
+      }));
+  } catch (err) {
+    console.error("Failed to query live WooCommerce collections:", err);
+    throw err;
+  }
 }
 
 /**
- * Get a specific collection by slug with live WooCommerce category fallback and alias support
+ * Get a specific collection by slug strictly from live WooCommerce categories
  */
 export async function getCollectionBySlug(slug: string): Promise<Collection | null> {
   const target = resolveCollectionSlug(slug);
 
-  // 1. Check in predefined curated collections
-  const collection = MOCK_COLLECTIONS.find(
-    (c) =>
-      c.slug.toLowerCase() === target ||
-      resolveCollectionSlug(c.slug) === target ||
-      c.slug.toLowerCase() === slug.toLowerCase()
-  );
+  try {
+    const wcCategories = await getWCCategories();
+    const matched = wcCategories.find((c) => {
+      const cSlug = c.slug.toLowerCase().trim();
+      return (
+        cSlug === target ||
+        resolveCollectionSlug(cSlug) === target ||
+        cSlug === slug.toLowerCase().trim() ||
+        c.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") === target
+      );
+    });
 
-  if (collection) {
-    return collection;
-  }
-
-  // 2. If not found in static list, check live WooCommerce categories
-  if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
-    try {
-      const wcCategories = await getWCCategories();
-      const matched = wcCategories.find((c) => {
-        const cSlug = c.slug.toLowerCase();
-        return (
-          cSlug === target ||
-          resolveCollectionSlug(cSlug) === target ||
-          cSlug === slug.toLowerCase() ||
-          c.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") === target
-        );
-      });
-
-      if (matched) {
-        return {
-          id: `wc-col-${matched.id}`,
-          name: matched.name,
-          slug: matched.slug,
-          description:
-            matched.description ||
-            `Explore our authentic, handcrafted curation of ${matched.name}.`,
-          bannerImage: matched.image?.src || "/images/festival-banner.jpg",
-          heroTagline: "Handloom Heritage Edit",
-          featured: true,
-        };
-      }
-    } catch (err) {
-      console.error("Failed to query WooCommerce categories for collection:", err);
+    if (matched) {
+      return {
+        id: `wc-col-${matched.id}`,
+        name: matched.name,
+        slug: matched.slug,
+        description:
+          matched.description ||
+          `Explore our authentic, handcrafted curation of ${matched.name}.`,
+        bannerImage: matched.image?.src || undefined,
+        heroTagline: "Handloom Heritage Edit",
+        featured: true,
+      };
     }
+  } catch (err) {
+    console.error("Failed to query WooCommerce categories for collection:", err);
+    throw err;
   }
 
   return null;

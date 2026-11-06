@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import Link from "next/link";
 import { Search, X, ArrowRight } from "lucide-react";
 import { searchProducts } from "@/lib/api/products";
@@ -153,7 +153,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                     className="group flex flex-col bg-stone-50 hover:bg-stone-100 border border-stone-200 p-2.5 transition-colors"
                   >
                     <div className="relative aspect-[3/4] w-full overflow-hidden bg-stone-200 mb-2">
-                      <Image
+                      <SafeImage
                         src={product.images[0]?.url || "/images/prod-1.jpg"}
                         alt={product.name}
                         fill

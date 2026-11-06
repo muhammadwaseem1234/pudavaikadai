@@ -8,11 +8,23 @@ const nextConfig: NextConfig = {
         hostname: "deeppink-ibis-405628.hostingersite.com",
       },
       {
+        protocol: "http",
+        hostname: "deeppink-ibis-405628.hostingersite.com",
+      },
+      {
         protocol: "https",
         hostname: "**.hostingersite.com",
       },
       {
+        protocol: "http",
+        hostname: "**.hostingersite.com",
+      },
+      {
         protocol: "https",
+        hostname: "maroon-peafowl-103168.hostingersite.com",
+      },
+      {
+        protocol: "http",
         hostname: "maroon-peafowl-103168.hostingersite.com",
       },
       {

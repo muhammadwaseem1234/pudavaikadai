@@ -35,6 +35,8 @@ export async function generateMetadata({
   };
 }
 
+export const revalidate = 10;
+
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);

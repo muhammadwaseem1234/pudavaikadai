@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { X, Plus, Minus, Trash2, ArrowRight, ShoppingBag, ShieldCheck } from "lucide-react";
 import { useCartStore } from "@/lib/store/useCartStore";
 import { formatCurrency } from "@/lib/utils/format";
@@ -121,7 +121,7 @@ export function CartDrawer() {
                 <div key={item.id} className="pt-4 first:pt-0 flex gap-4">
                   {/* Thumbnail */}
                   <div className="relative w-20 h-26 shrink-0 bg-stone-100 overflow-hidden border border-stone-200">
-                    <Image
+                    <SafeImage
                       src={
                         item.variant?.image ||
                         item.product.images[0]?.url ||

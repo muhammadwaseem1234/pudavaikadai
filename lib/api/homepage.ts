@@ -5,7 +5,7 @@ import {
   MOCK_SECONDARY_BANNER,
   MOCK_TESTIMONIALS,
 } from "@/lib/mock/homepage";
-import { MOCK_CATEGORIES } from "@/lib/mock/categories";
+import { getCategories } from "./categories";
 import { getFeaturedProducts, getNewArrivals, getBestSellers } from "./products";
 import { ANNOUNCEMENTS } from "@/lib/constants/navigation";
 
@@ -13,15 +13,16 @@ import { ANNOUNCEMENTS } from "@/lib/constants/navigation";
  * Get aggregated data required to render the complete homepage
  */
 export async function getHomepageData(): Promise<HomepageData> {
-  const [featuredProducts, newArrivals, bestSellers] = await Promise.all([
+  const [featuredProducts, newArrivals, bestSellers, categories] = await Promise.all([
     getFeaturedProducts(6),
     getNewArrivals(6),
     getBestSellers(6),
+    getCategories(),
   ]);
 
   return {
     heroSlides: MOCK_HERO_SLIDES,
-    featuredCategories: MOCK_CATEGORIES.filter((c) => c.featured),
+    featuredCategories: categories.slice(0, 4),
     featuredProducts,
     newArrivals,
     bestSellers,

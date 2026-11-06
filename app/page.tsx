@@ -9,7 +9,7 @@ import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { NewsletterSection } from "@/components/home/NewsletterSection";
 import { InstagramSection } from "@/components/home/InstagramSection";
 
-export const revalidate = 3600; // 1 hour ISR
+export const revalidate = 10; // Dynamic 10s revalidation for live updates
 
 export default async function HomePage() {
   const data = await getHomepageData();

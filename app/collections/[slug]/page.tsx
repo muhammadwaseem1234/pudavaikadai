@@ -28,6 +28,8 @@ export async function generateMetadata({
   };
 }
 
+export const revalidate = 10;
+
 export default async function CollectionPage({ params }: CollectionPageProps) {
   const { slug } = await params;
   const [collection, categories, { products }] = await Promise.all([

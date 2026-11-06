@@ -68,6 +68,8 @@ export function ProductListingClient({
       result = result.filter((p) => p.stockStatus === "in_stock");
     }
 
+    const isLiveProduct = (p: Product) => !p.id.startsWith("prod-");
+
     // Sort
     switch (sort) {
       case "price-low-to-high":
@@ -80,11 +82,26 @@ export function ProductListingClient({
         result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
         break;
       case "newest":
-        result.reverse();
+        result.sort((a, b) => {
+          if (isLiveProduct(a) !== isLiveProduct(b)) {
+            return isLiveProduct(a) ? -1 : 1;
+          }
+          const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return timeB - timeA;
+        });
         break;
       case "featured":
       default:
-        result.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+        result.sort((a, b) => {
+          if (isLiveProduct(a) !== isLiveProduct(b)) {
+            return isLiveProduct(a) ? -1 : 1;
+          }
+          if (b.featured !== a.featured) return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+          const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return timeB - timeA;
+        });
         break;
     }
 

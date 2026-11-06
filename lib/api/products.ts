@@ -1,5 +1,4 @@
 import { Product, FilterOptions, SortOption } from "@/lib/types";
-import { MOCK_PRODUCTS } from "@/lib/mock/products";
 import {
   getWCProducts,
   getWCProductBySlug,
@@ -8,20 +7,19 @@ import { adaptWCProduct } from "@/lib/wordpress/adapter";
 import { resolveCollectionSlug } from "@/lib/api/collections";
 
 /**
- * Helper to fetch base product list from either WooCommerce or Mock
+ * Fetch base product list strictly from live WooCommerce
  */
 async function getBaseProducts(): Promise<Product[]> {
-  if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
-    try {
-      const wcProducts = await getWCProducts();
-      if (wcProducts && wcProducts.length > 0) {
-        return wcProducts.map(adaptWCProduct);
-      }
-    } catch (err) {
-      console.error("Failed to fetch WooCommerce products, falling back to mock:", err);
+  try {
+    const wcProducts = await getWCProducts();
+    if (wcProducts && wcProducts.length > 0) {
+      return wcProducts.map(adaptWCProduct);
     }
+    return [];
+  } catch (err) {
+    console.error("Failed to fetch WooCommerce products:", err);
+    throw err;
   }
-  return [...MOCK_PRODUCTS];
 }
 
 /**
@@ -104,13 +102,30 @@ export async function getProducts(
         list.sort((a, b) => (b.rating || 0) - (a.rating || 0));
         break;
       case "newest":
-        list.reverse();
+        list.sort((a, b) => {
+          const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return timeB - timeA;
+        });
         break;
       case "featured":
       default:
-        list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+        list.sort((a, b) => {
+          if (b.featured !== a.featured) return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+          const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+          const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+          return timeB - timeA;
+        });
         break;
     }
+  } else {
+    // Default order: Featured first, then newest (createdAt desc)
+    list.sort((a, b) => {
+      if (b.featured !== a.featured) return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+      const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return timeB - timeA;
+    });
   }
 
   return {
@@ -120,46 +135,48 @@ export async function getProducts(
 }
 
 /**
- * Get a single product by its slug
+ * Get a single product strictly from live WooCommerce by its slug
  */
 export async function getProductBySlug(slug: string): Promise<Product | null> {
-  if ((process.env.DATA_SOURCE || process.env.NEXT_PUBLIC_DATA_SOURCE) === "live") {
-    try {
-      const wcProduct = await getWCProductBySlug(slug);
-      if (wcProduct) {
-        return adaptWCProduct(wcProduct);
-      }
-    } catch (err) {
-      console.error(`Failed to fetch WooCommerce product slug ${slug}:`, err);
+  try {
+    const wcProduct = await getWCProductBySlug(slug);
+    if (wcProduct) {
+      return adaptWCProduct(wcProduct);
     }
+  } catch (err) {
+    console.error(`Failed to fetch WooCommerce product slug ${slug}:`, err);
+    throw err;
   }
-
-  const product = MOCK_PRODUCTS.find((p) => p.slug === slug);
-  return product || null;
+  return null;
 }
 
 /**
- * Get featured products for homepage or highlights
+ * Get featured products strictly from live WooCommerce
  */
 export async function getFeaturedProducts(limit: number = 6): Promise<Product[]> {
   const { products } = await getProducts();
   const featured = products.filter((p) => p.featured);
-  return (featured.length > 0 ? featured : products).slice(0, limit);
+  if (featured.length > 0) {
+    return featured.slice(0, limit);
+  }
+  return products.slice(0, limit);
 }
 
 /**
- * Get new arrival products
+ * Get new arrival products (sorted by date created descending)
  */
 export async function getNewArrivals(limit: number = 6): Promise<Product[]> {
   const { products } = await getProducts();
-  const arrivals = products.filter(
-    (p) => p.collections?.includes("new-arrivals") || p.badge === "New"
-  );
-  return (arrivals.length > 0 ? arrivals : products).slice(0, limit);
+  const sorted = [...products].sort((a, b) => {
+    const timeA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+    const timeB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+    return timeB - timeA;
+  });
+  return sorted.slice(0, limit);
 }
 
 /**
- * Get best seller products
+ * Get best seller products strictly from live WooCommerce
  */
 export async function getBestSellers(limit: number = 6): Promise<Product[]> {
   const { products } = await getProducts();
@@ -170,7 +187,7 @@ export async function getBestSellers(limit: number = 6): Promise<Product[]> {
 }
 
 /**
- * Get related products based on category or collection
+ * Get related products strictly from live WooCommerce products
  */
 export async function getRelatedProducts(
   currentSlug: string,
@@ -187,7 +204,7 @@ export async function getRelatedProducts(
 }
 
 /**
- * Search products by query term
+ * Search products by query term strictly from live WooCommerce
  */
 export async function searchProducts(
   query: string,

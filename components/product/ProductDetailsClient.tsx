@@ -148,20 +148,19 @@ export function ProductDetailsClient({
           {/* Stock State */}
           <div className="flex items-center gap-2 text-xs">
             <span
-              className={`w-2 h-2 rounded-full ${
-                product.stockStatus === "in_stock"
+              className={`w-2 h-2 rounded-full ${product.stockStatus === "in_stock"
                   ? "bg-emerald-500"
                   : product.stockStatus === "low_stock"
-                  ? "bg-amber-500"
-                  : "bg-red-500"
-              }`}
+                    ? "bg-amber-500"
+                    : "bg-red-500"
+                }`}
             />
             <span className="font-medium text-stone-800">
               {product.stockStatus === "in_stock"
                 ? "In Stock — Ready to dispatch from master looms"
                 : product.stockStatus === "low_stock"
-                ? `Only ${product.stockQuantity || 2} pieces remaining`
-                : "Currently Out of Stock — Weave on order available"}
+                  ? `Only ${product.stockQuantity || 2} pieces remaining`
+                  : "Currently Out of Stock — Weave on order available"}
             </span>
           </div>
 
@@ -224,11 +223,10 @@ export function ProductDetailsClient({
             <button
               type="button"
               onClick={() => toggleWishlist(product)}
-              className={`w-full py-2.5 text-xs uppercase tracking-wider flex items-center justify-center gap-2 border transition-colors cursor-pointer ${
-                wishlisted
+              className={`w-full py-2.5 text-xs uppercase tracking-wider flex items-center justify-center gap-2 border transition-colors cursor-pointer ${wishlisted
                   ? "border-red-200 bg-red-50 text-red-700"
                   : "border-stone-200 text-stone-700 hover:border-stone-400 hover:bg-stone-50"
-              }`}
+                }`}
             >
               <Heart className={`w-3.5 h-3.5 ${wishlisted ? "fill-red-600 text-red-600" : ""}`} />
               <span>{wishlisted ? "Saved in Wishlist" : "Add to Wishlist"}</span>
@@ -260,11 +258,10 @@ export function ProductDetailsClient({
           <button
             type="button"
             onClick={() => setActiveTab("specs")}
-            className={`pb-3 font-semibold transition-colors cursor-pointer relative ${
-              activeTab === "specs"
+            className={`pb-3 font-semibold transition-colors cursor-pointer relative ${activeTab === "specs"
                 ? "text-stone-900"
                 : "text-stone-400 hover:text-stone-700"
-            }`}
+              }`}
           >
             <span>Product Specifications</span>
             {activeTab === "specs" && (
@@ -275,11 +272,10 @@ export function ProductDetailsClient({
           <button
             type="button"
             onClick={() => setActiveTab("shipping")}
-            className={`pb-3 font-semibold transition-colors cursor-pointer relative ${
-              activeTab === "shipping"
+            className={`pb-3 font-semibold transition-colors cursor-pointer relative ${activeTab === "shipping"
                 ? "text-stone-900"
                 : "text-stone-400 hover:text-stone-700"
-            }`}
+              }`}
           >
             <span>Delivery & Returns</span>
             {activeTab === "shipping" && (
@@ -290,11 +286,10 @@ export function ProductDetailsClient({
           <button
             type="button"
             onClick={() => setActiveTab("reviews")}
-            className={`pb-3 font-semibold transition-colors cursor-pointer relative ${
-              activeTab === "reviews"
+            className={`pb-3 font-semibold transition-colors cursor-pointer relative ${activeTab === "reviews"
                 ? "text-stone-900"
                 : "text-stone-400 hover:text-stone-700"
-            }`}
+              }`}
           >
             <span>Customer Reviews ({product.reviews?.length || 0})</span>
             {activeTab === "reviews" && (
@@ -305,11 +300,10 @@ export function ProductDetailsClient({
           <button
             type="button"
             onClick={() => setActiveTab("faqs")}
-            className={`pb-3 font-semibold transition-colors cursor-pointer relative ${
-              activeTab === "faqs"
+            className={`pb-3 font-semibold transition-colors cursor-pointer relative ${activeTab === "faqs"
                 ? "text-stone-900"
                 : "text-stone-400 hover:text-stone-700"
-            }`}
+              }`}
           >
             <span>Saree FAQs</span>
             {activeTab === "faqs" && (
@@ -326,7 +320,7 @@ export function ProductDetailsClient({
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-900 mb-2">
                   Weave & Drape Description
                 </h3>
-                <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-stone-600 leading-relaxed whitespace-pre-line">
                   {product.description}
                 </p>
               </div>

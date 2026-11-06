@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { Heart, ShoppingBag, Check } from "lucide-react";
 import { Product } from "@/lib/types";
 import { formatCurrency, calculateDiscount } from "@/lib/utils/format";
@@ -56,7 +56,7 @@ export function ProductCard({ product, className = "", priority = false }: Produ
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-stone-100 select-none">
         <Link href={`/products/${product.slug}`} className="block w-full h-full">
           {/* Primary image */}
-          <Image
+          <SafeImage
             src={primaryImage}
             alt={product.name}
             fill
@@ -67,7 +67,7 @@ export function ProductCard({ product, className = "", priority = false }: Produ
 
           {/* Secondary image on hover (if different) */}
           {hoverImage !== primaryImage && (
-            <Image
+            <SafeImage
               src={hoverImage}
               alt={`${product.name} alternate view`}
               fill
@@ -95,11 +95,10 @@ export function ProductCard({ product, className = "", priority = false }: Produ
         <button
           type="button"
           onClick={handleWishlist}
-          className={`absolute top-2.5 right-2.5 p-2 rounded-full transition-all duration-200 z-20 cursor-pointer ${
-            wishlisted
+          className={`absolute top-2.5 right-2.5 p-2 rounded-full transition-all duration-200 z-20 cursor-pointer ${wishlisted
               ? "bg-red-50 text-red-600 shadow-sm"
               : "bg-white/80 backdrop-blur-xs text-stone-700 hover:bg-white hover:text-stone-950"
-          }`}
+            }`}
           aria-label={wishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
         >
           <Heart className={`w-3.5 h-3.5 ${wishlisted ? "fill-red-600 text-red-600" : ""}`} />

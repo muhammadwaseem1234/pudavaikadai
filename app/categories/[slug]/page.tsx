@@ -26,6 +26,8 @@ export async function generateMetadata({
   };
 }
 
+export const revalidate = 10;
+
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = await params;
   const [category, categories, { products }] = await Promise.all([

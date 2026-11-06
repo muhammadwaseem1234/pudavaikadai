@@ -15,35 +15,134 @@ import {
 import { WCCategory, WCCustomer, WCProduct } from "./woocommerce";
 
 /**
- * Strips HTML tags from text
+ * Strips HTML tags from text, preserving line breaks
  */
 function stripHtml(html: string): string {
   if (!html) return "";
-  return html.replace(/<[^>]*>?/gm, "").trim();
+  return html
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/p>/gi, "\n\n")
+    .replace(/<\/li>/gi, "\n")
+    .replace(/<[^>]*>?/gm, " ")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n\s*\n/g, "\n\n")
+    .trim();
 }
 
 /**
- * Extracts first image URL from HTML content if available
+ * Normalizes a WordPress image URL by removing thumbnail dimension suffixes
+ * (e.g., -200x300.jpg -> .jpg) to ensure full-resolution rendering,
+ * and ensures modern HTTPS protocols.
+ */
+export function normalizeWordPressImageUrl(url: string): string {
+  if (!url) return url;
+  let normalized = url.trim();
+
+  // Remove thumbnail suffix: e.g. "-200x300.jpg" -> ".jpg"
+  normalized = normalized.replace(/-\d+x\d+(\.[a-zA-Z]+)$/, "$1");
+
+  // Upgrade HTTP to HTTPS for hostingersite domains to avoid protocol mismatch
+  if (normalized.startsWith("http://") && normalized.includes("hostingersite.com")) {
+    normalized = normalized.replace("http://", "https://");
+  }
+
+  return normalized;
+}
+
+/**
+ * Extracts all image URLs and alt texts from an HTML string
+ */
+function extractImagesFromHtml(html: string): { url: string; alt: string }[] {
+  if (!html) return [];
+  const results: { url: string; alt: string }[] = [];
+  const matches = [...html.matchAll(/<img[^>]+src=["']([^"']+)["'][^>]*>/gi)];
+
+  for (const m of matches) {
+    const rawSrc = m[1];
+    const src = normalizeWordPressImageUrl(rawSrc);
+    const altMatch = m[0].match(/alt=["']([^"']*)["']/i);
+    const alt = altMatch ? altMatch[1].trim() : "";
+    if (src && !results.some((r) => r.url === src)) {
+      results.push({ url: src, alt });
+    }
+  }
+
+  return results;
+}
+
+/**
+ * Parses Google Sheets / Excel / HTML tables commonly pasted into WP description
+ * into structured key-value attribute pairs, and returns clean narrative text without the table.
+ */
+function parseTableAttributes(html: string): {
+  attributes: { name: string; value: string }[];
+  cleanText: string;
+} {
+  if (!html || !html.includes("<table")) {
+    return { attributes: [], cleanText: stripHtml(html) };
+  }
+
+  const attributes: { name: string; value: string }[] = [];
+  const rowMatches = [...html.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)];
+
+  // Case 1: Horizontal Table (Row 0 = Column Headers, Row 1 = Column Values)
+  if (rowMatches.length >= 2) {
+    const headers = [...rowMatches[0][1].matchAll(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi)].map((m) =>
+      stripHtml(m[1])
+    );
+    const values = [...rowMatches[1][1].matchAll(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi)].map((m) =>
+      stripHtml(m[1])
+    );
+
+    if (headers.length > 0 && headers.length === values.length) {
+      for (let i = 0; i < headers.length; i++) {
+        if (headers[i] && values[i]) {
+          attributes.push({ name: headers[i], value: values[i] });
+        }
+      }
+    }
+  }
+
+  // Case 2: Vertical Table (Each Row has 2 columns: Column 1 = Attribute Name, Column 2 = Value)
+  if (attributes.length === 0) {
+    for (const row of rowMatches) {
+      const cells = [...row[1].matchAll(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi)].map((m) =>
+        stripHtml(m[1])
+      );
+      if (cells.length === 2 && cells[0] && cells[1]) {
+        attributes.push({ name: cells[0], value: cells[1] });
+      }
+    }
+  }
+
+  // Clean narrative text by removing table tags
+  const cleanHtmlWithoutTable = html.replace(/<table[\s\S]*?<\/table>/gi, "");
+  const cleanText = stripHtml(cleanHtmlWithoutTable);
+
+  return { attributes, cleanText };
+}
+
+/**
+ * Extracts first image URL from HTML content if available (legacy fallback helper)
  */
 function extractImageFromHtml(html: string): string | null {
-  if (!html) return null;
-  const match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
-  return match && match[1] ? match[1] : null;
+  const images = extractImagesFromHtml(html);
+  return images.length > 0 ? images[0].url : null;
 }
 
 /**
  * Maps WooCommerce stock status to frontend StockStatus
  */
-function mapStockStatus(status: WCProduct["stock_status"]): StockStatus {
-  switch (status) {
-    case "instock":
-      return "in_stock";
-    case "onbackorder":
-      return "low_stock";
-    case "outofstock":
-    default:
-      return "out_of_stock";
+function mapStockStatus(
+  status: WCProduct["stock_status"],
+  quantity?: number | null
+): StockStatus {
+  if (status === "outofstock") return "out_of_stock";
+  if (status === "onbackorder") return "low_stock";
+  if (quantity !== undefined && quantity !== null && quantity > 0 && quantity <= 3) {
+    return "low_stock";
   }
+  return "in_stock";
 }
 
 /**
@@ -55,7 +154,7 @@ export function adaptWCCategory(wcCat: WCCategory): Category {
     name: wcCat.name,
     slug: wcCat.slug,
     description: stripHtml(wcCat.description),
-    image: wcCat.image?.src || "/images/prod-1.jpg",
+    image: wcCat.image?.src ? normalizeWordPressImageUrl(wcCat.image.src) : "/images/prod-1.jpg",
     itemCount: wcCat.count,
     featured: false,
   };
@@ -65,37 +164,53 @@ export function adaptWCCategory(wcCat: WCCategory): Category {
  * Adapts WooCommerce Product to frontend Product
  */
 export function adaptWCProduct(wcProd: WCProduct): Product {
-  let imageUrls: { id: string; url: string; alt: string; isPrimary: boolean }[] = [];
+  const imageMap = new Map<string, { id: string; url: string; alt: string; isPrimary: boolean }>();
 
+  // 1. Process official WooCommerce Product & Gallery Images
   if (wcProd.images && wcProd.images.length > 0) {
-    imageUrls = wcProd.images.map((img, index) => ({
-      id: String(img.id || index),
-      url: img.src,
-      alt: img.alt || img.name || wcProd.name,
-      isPrimary: index === 0,
-    }));
-  } else {
-    // Check if image was embedded in description HTML
-    const inlineImage = extractImageFromHtml(wcProd.description);
-    if (inlineImage) {
-      imageUrls = [
-        {
-          id: "desc-image",
-          url: inlineImage,
-          alt: wcProd.name,
-          isPrimary: true,
-        },
-      ];
-    } else {
-      imageUrls = [
-        {
-          id: "fallback",
-          url: "/images/prod-1.jpg",
-          alt: wcProd.name,
-          isPrimary: true,
-        },
-      ];
+    wcProd.images.forEach((img, index) => {
+      const normalizedSrc = normalizeWordPressImageUrl(img.src);
+      if (normalizedSrc && !imageMap.has(normalizedSrc)) {
+        imageMap.set(normalizedSrc, {
+          id: String(img.id || index),
+          url: normalizedSrc,
+          alt: img.alt || img.name || wcProd.name,
+          isPrimary: index === 0,
+        });
+      }
+    });
+  }
+
+  // 2. Extract any images embedded inside Description or Short Description
+  const inlineDescImages = extractImagesFromHtml(wcProd.description || "");
+  const inlineShortImages = extractImagesFromHtml(wcProd.short_description || "");
+  const allInlineImages = [...inlineDescImages, ...inlineShortImages];
+
+  allInlineImages.forEach((img, idx) => {
+    if (!imageMap.has(img.url)) {
+      imageMap.set(img.url, {
+        id: `inline-${idx}`,
+        url: img.url,
+        alt: img.alt || wcProd.name,
+        isPrimary: imageMap.size === 0,
+      });
     }
+  });
+
+  // 3. Fallback image if no photos exist
+  if (imageMap.size === 0) {
+    imageMap.set("/images/prod-1.jpg", {
+      id: "fallback",
+      url: "/images/prod-1.jpg",
+      alt: wcProd.name,
+      isPrimary: true,
+    });
+  }
+
+  const imageUrls = Array.from(imageMap.values());
+  // Ensure exactly one is marked primary
+  if (imageUrls.length > 0 && !imageUrls.some((img) => img.isPrimary)) {
+    imageUrls[0].isPrimary = true;
   }
 
   // Map categories
@@ -145,34 +260,117 @@ export function adaptWCProduct(wcProd: WCProduct): Product {
 
   const collections = Array.from(collectionsSet);
 
-  // Find Fabric and Zari attributes if present
-  let fabric: string | undefined;
-  let zariType: string | undefined;
+  // 4. Parse Artisan Specifications & Attributes
+  // We parse both WooCommerce attributes AND Google Sheet/Excel tables pasted in short_description or description
+  const shortDescParsed = parseTableAttributes(wcProd.short_description || "");
+  const descParsed = parseTableAttributes(wcProd.description || "");
 
-  const attributes = (wcProd.attributes || []).map((attr) => {
-    const value = attr.options ? attr.options.join(", ") : "";
-    const lowerName = attr.name.toLowerCase();
-    if (lowerName.includes("fabric") || lowerName.includes("material")) {
-      fabric = value;
+  const mergedAttrsMap = new Map<string, string>();
+
+  // Add WC attributes first
+  (wcProd.attributes || []).forEach((attr) => {
+    const value = attr.options ? attr.options.join(", ").trim() : "";
+    if (attr.name && value) {
+      mergedAttrsMap.set(attr.name.trim().toLowerCase(), value);
     }
-    if (lowerName.includes("zari")) {
-      zariType = value;
-    }
-    return {
-      name: attr.name,
-      value,
-    };
   });
 
+  // Merge table attributes from short_description and description
+  [...shortDescParsed.attributes, ...descParsed.attributes].forEach((attr) => {
+    const key = attr.name.trim().toLowerCase();
+    if (!mergedAttrsMap.has(key) && attr.value) {
+      mergedAttrsMap.set(key, attr.value.trim());
+    }
+  });
+
+  // Extract key saree attributes
+  let fabric: string | undefined;
+  let zariType: string | undefined;
+  let weave: string | undefined;
+  let occasion: string | undefined;
+  let blouse: string | undefined;
+  let length: string | undefined;
+  let origin: string | undefined;
+  let care: string | undefined;
+  let colour: string | undefined;
+
+  const attributes: { name: string; value: string }[] = [];
+
+  mergedAttrsMap.forEach((val, key) => {
+    // Re-capitalize attribute name for display
+    const displayName = key
+      .split(" ")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+
+    attributes.push({ name: displayName, value: val });
+
+    if (key.includes("fabric") || key.includes("material")) fabric = val;
+    if (key.includes("zari")) zariType = val;
+    if (key.includes("weave")) weave = val;
+    if (key.includes("occasion")) occasion = val;
+    if (key.includes("blouse")) blouse = val;
+    if (key.includes("length")) length = val;
+    if (key.includes("origin")) origin = val;
+    if (key.includes("care")) care = val;
+    if (key.includes("colour") || key.includes("color")) colour = val;
+  });
+
+  // Fallback fabric from primary category name if not specified
+  if (!fabric && primaryCategory.name) {
+    if (primaryCategory.name.toLowerCase().includes("cotton silk")) {
+      fabric = "Cotton Silk Blend";
+    } else if (primaryCategory.name.toLowerCase().includes("cotton")) {
+      fabric = "Pure Handloom Cotton";
+    } else if (primaryCategory.name.toLowerCase().includes("silk")) {
+      fabric = "Pure Mulberry Silk";
+    } else if (primaryCategory.name.toLowerCase().includes("lenin") || primaryCategory.name.toLowerCase().includes("linen")) {
+      fabric = "Pure Organic Linen";
+    }
+  }
+
+  // 5. SKU Resolution: if sku is blank, look for product codes in tags (e.g. PKPASHL002)
+  let resolvedSku = wcProd.sku ? wcProd.sku.trim() : "";
+  if (!resolvedSku && wcProd.tags && wcProd.tags.length > 0) {
+    const candidateTag = wcProd.tags.find((t) => /^[A-Za-z0-9_-]{4,20}$/.test(t.name.trim()));
+    if (candidateTag) {
+      resolvedSku = candidateTag.name.trim();
+    }
+  }
+  if (!resolvedSku) {
+    resolvedSku = `SKU-${wcProd.id}`;
+  }
+
+  // 6. Pricing
   const regularPrice = parseFloat(wcProd.regular_price || wcProd.price) || 0;
   const salePrice = wcProd.sale_price ? parseFloat(wcProd.sale_price) : undefined;
+
+  // 7. Clean Description & Short Description
+  let cleanShortDesc = shortDescParsed.cleanText;
+  if (!cleanShortDesc && colour && weave) {
+    cleanShortDesc = `${weave} ${primaryCategory.name} in ${colour}. ${length ? `Length: ${length}.` : ""} ${blouse ? `Blouse: ${blouse}.` : ""}`.trim();
+  }
+
+  let cleanFullDesc = descParsed.cleanText;
+  // If description only contained an <img> and was empty of text, provide an authentic handloom summary
+  if (!cleanFullDesc) {
+    cleanFullDesc = [
+      `A magnificent ${primaryCategory.name} woven with authentic ${weave || "handloom"} techniques.`,
+      colour ? `Featuring ${colour}.` : "",
+      origin ? `Artfully handcrafted by master generational weavers of ${origin}.` : "",
+      occasion ? `An ideal heirloom choice for ${occasion}.` : "",
+      care ? `Care Instructions: ${care}.` : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+  }
 
   return {
     id: String(wcProd.id),
     name: wcProd.name,
     slug: wcProd.slug,
-    description: stripHtml(wcProd.description),
-    shortDescription: stripHtml(wcProd.short_description),
+    description: cleanFullDesc,
+    shortDescription: cleanShortDesc,
     price: regularPrice,
     salePrice: salePrice && salePrice < regularPrice ? salePrice : undefined,
     currency: "INR",
@@ -180,9 +378,9 @@ export function adaptWCProduct(wcProd: WCProduct): Product {
     category: primaryCategory,
     categories,
     collections,
-    stockStatus: mapStockStatus(wcProd.stock_status),
+    stockStatus: mapStockStatus(wcProd.stock_status, wcProd.stock_quantity),
     stockQuantity: wcProd.stock_quantity ?? undefined,
-    sku: wcProd.sku || `SKU-${wcProd.id}`,
+    sku: resolvedSku,
     featured: wcProd.featured,
     rating: parseFloat(wcProd.average_rating) || 4.8,
     reviewsCount: wcProd.rating_count || 0,

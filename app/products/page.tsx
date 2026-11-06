@@ -9,6 +9,8 @@ export const metadata: Metadata = {
     "Explore our complete collection of authentic handloom silk sarees, including pure Kanchipuram, Banarasi brocades, and contemporary soft silks.",
 };
 
+export const revalidate = 10;
+
 export default async function ProductsPage() {
   const [{ products }, categories] = await Promise.all([
     getProducts(),
