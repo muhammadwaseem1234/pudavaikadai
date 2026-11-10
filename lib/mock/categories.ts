@@ -21,8 +21,8 @@ export const MOCK_CATEGORIES: Category[] = [
   },
   {
     id: "cat-3",
-    name: "Lenin Sarees",
-    slug: "lenin-sarees",
+    name: "linen Sarees",
+    slug: "linen-sarees",
     description: "Featherlight metallic tissue and sheer organza drapes designed for contemporary grandeur and soirées.",
     image: "/images/IMG_5810-scaled.jpg",
     itemCount: 15,

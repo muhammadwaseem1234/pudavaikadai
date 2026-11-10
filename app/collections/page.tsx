@@ -9,7 +9,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 export const metadata: Metadata = {
   title: "Collections | Pudavai Kadai - Heritage Handlooms",
   description:
-    "Explore our signature handloom saree collections: Pure Silk Sarees, Cotton Silk Sarees, Lenin Sarees, and Cotton Sarees.",
+    "Explore our signature handloom saree collections: Pure Silk Sarees, Cotton Silk Sarees, linen Sarees, and Cotton Sarees.",
 };
 
 // SVG Lotus Flower Emblem matching the reference design
@@ -66,11 +66,11 @@ export default async function CollectionsPage() {
       image: "/images/p.png",
     },
     {
-      id: "lenin-sarees",
-      tag: "LENIN SAREES",
+      id: "linen-sarees",
+      tag: "linen SAREES",
       headline: "Light & Graceful",
       subtitle: "Comfort meets tradition in every drape.",
-      href: `/collections/lenin-sarees`,
+      href: `/collections/linen-sarees`,
       image: "/images/pp.png",
     },
     {
@@ -114,9 +114,8 @@ export default async function CollectionsPage() {
             <Link
               key={panel.id}
               href={panel.href}
-              className={`group relative block w-full overflow-hidden select-none ${
-                idx !== panels.length - 1 ? "md:border-r md:border-stone-800/40" : ""
-              }`}
+              className={`group relative block w-full overflow-hidden select-none ${idx !== panels.length - 1 ? "md:border-r md:border-stone-800/40" : ""
+                }`}
             >
               {/* Vertical Card Container with Saree Image */}
               <div className="relative w-full h-[520px] sm:h-[580px] lg:h-[640px] xl:h-[680px] overflow-hidden bg-stone-950 transition-all duration-700">
@@ -197,10 +196,10 @@ export default async function CollectionsPage() {
             Cotton Silk Sarees
           </Link>
           <Link
-            href="/collections/lenin-sarees"
+            href="/collections/linen-sarees"
             className="px-5 py-2.5 text-xs uppercase tracking-[0.18em] font-medium rounded-full border border-stone-300 text-stone-700 hover:border-[#927238] hover:text-[#927238] transition-colors"
           >
-            Lenin Sarees
+            linen Sarees
           </Link>
           <Link
             href="/collections/cotton-sarees"

@@ -104,15 +104,6 @@ export function ProductDetailsClient({
 
           {/* Ratings & SKU */}
           <div className="flex items-center justify-between text-xs text-stone-500 pb-3 border-b border-stone-200">
-            <div className="flex items-center gap-2">
-              <div className="flex text-[#ca8a04]">
-                {"★".repeat(Math.round(product.rating || 5))}
-              </div>
-              <span className="font-semibold text-stone-800">
-                {(product.rating || 5).toFixed(1)}
-              </span>
-              <span>({product.reviewsCount || 12} reviews)</span>
-            </div>
             {product.sku && <span>SKU: {product.sku}</span>}
           </div>
 
@@ -149,10 +140,10 @@ export function ProductDetailsClient({
           <div className="flex items-center gap-2 text-xs">
             <span
               className={`w-2 h-2 rounded-full ${product.stockStatus === "in_stock"
-                  ? "bg-emerald-500"
-                  : product.stockStatus === "low_stock"
-                    ? "bg-amber-500"
-                    : "bg-red-500"
+                ? "bg-emerald-500"
+                : product.stockStatus === "low_stock"
+                  ? "bg-amber-500"
+                  : "bg-red-500"
                 }`}
             />
             <span className="font-medium text-stone-800">
@@ -224,8 +215,8 @@ export function ProductDetailsClient({
               type="button"
               onClick={() => toggleWishlist(product)}
               className={`w-full py-2.5 text-xs uppercase tracking-wider flex items-center justify-center gap-2 border transition-colors cursor-pointer ${wishlisted
-                  ? "border-red-200 bg-red-50 text-red-700"
-                  : "border-stone-200 text-stone-700 hover:border-stone-400 hover:bg-stone-50"
+                ? "border-red-200 bg-red-50 text-red-700"
+                : "border-stone-200 text-stone-700 hover:border-stone-400 hover:bg-stone-50"
                 }`}
             >
               <Heart className={`w-3.5 h-3.5 ${wishlisted ? "fill-red-600 text-red-600" : ""}`} />
@@ -259,8 +250,8 @@ export function ProductDetailsClient({
             type="button"
             onClick={() => setActiveTab("specs")}
             className={`pb-3 font-semibold transition-colors cursor-pointer relative ${activeTab === "specs"
-                ? "text-stone-900"
-                : "text-stone-400 hover:text-stone-700"
+              ? "text-stone-900"
+              : "text-stone-400 hover:text-stone-700"
               }`}
           >
             <span>Product Specifications</span>
@@ -273,40 +264,12 @@ export function ProductDetailsClient({
             type="button"
             onClick={() => setActiveTab("shipping")}
             className={`pb-3 font-semibold transition-colors cursor-pointer relative ${activeTab === "shipping"
-                ? "text-stone-900"
-                : "text-stone-400 hover:text-stone-700"
+              ? "text-stone-900"
+              : "text-stone-400 hover:text-stone-700"
               }`}
           >
             <span>Delivery & Returns</span>
             {activeTab === "shipping" && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-stone-900" />
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("reviews")}
-            className={`pb-3 font-semibold transition-colors cursor-pointer relative ${activeTab === "reviews"
-                ? "text-stone-900"
-                : "text-stone-400 hover:text-stone-700"
-              }`}
-          >
-            <span>Customer Reviews ({product.reviews?.length || 0})</span>
-            {activeTab === "reviews" && (
-              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-stone-900" />
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("faqs")}
-            className={`pb-3 font-semibold transition-colors cursor-pointer relative ${activeTab === "faqs"
-                ? "text-stone-900"
-                : "text-stone-400 hover:text-stone-700"
-              }`}
-          >
-            <span>Saree FAQs</span>
-            {activeTab === "faqs" && (
               <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-stone-900" />
             )}
           </button>
@@ -363,7 +326,7 @@ export function ProductDetailsClient({
                 7-Day Handloom Exchange Policy
               </h4>
               <p className="text-xs text-stone-600">
-                We accept hassle-free exchanges within 7 days of delivery, provided the Silk Mark tag and original fold are intact.
+                We accept hassle-free exchanges within 7 days of delivery, provided the original fold are intact.
               </p>
             </div>
           )}

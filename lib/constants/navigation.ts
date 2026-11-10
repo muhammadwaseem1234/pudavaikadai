@@ -24,9 +24,9 @@ export const MAIN_NAV_ITEMS: NavigationItem[] = [
         badge: "New",
       },
       {
-        id: "Lenin Sarees",
-        label: "Lenin Sarees",
-        href: "/collections/lenin-sarees",
+        id: "linen Sarees",
+        label: "linen Sarees",
+        href: "/collections/linen-sarees",
       },
       {
         id: "Cotton Sarees",
@@ -53,7 +53,7 @@ export const FOOTER_COLUMNS = [
     links: [
       { label: "Silk Sarees", href: "/categories/silk-sarees" },
       { label: "Cotton Silk Sarees", href: "/categories/cotton-silk-sarees" },
-      { label: "Lenin Sarees", href: "/categories/lenin-sarees" },
+      { label: "linen Sarees", href: "/categories/linen-sarees" },
       { label: "Cotton Sarees", href: "/categories/cotton-sarees" },
     ],
   },
@@ -62,7 +62,7 @@ export const FOOTER_COLUMNS = [
     links: [
       { label: "Pure Silk Sarees", href: "/collections/silk-sarees" },
       { label: "Cotton Silk Sarees", href: "/collections/cotton-silk-sarees" },
-      { label: "Lenin Sarees", href: "/collections/lenin-sarees" },
+      { label: "linen Sarees", href: "/collections/linen-sarees" },
       { label: "Cotton Sarees", href: "/collections/cotton-sarees" },
     ],
   },

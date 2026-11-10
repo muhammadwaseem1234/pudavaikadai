@@ -56,8 +56,8 @@ const nextConfig: NextConfig = {
         destination: "/collections/silk-sarees",
       },
       {
-        source: "/lenin-sarees",
-        destination: "/collections/lenin-sarees",
+        source: "/linen-sarees",
+        destination: "/collections/linen-sarees",
       },
     ];
   },

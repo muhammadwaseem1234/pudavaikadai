@@ -8,7 +8,7 @@ export function resolveCollectionSlug(slug: string): string {
   const s = slug.toLowerCase().trim();
   if (
     s === "cotton-silk" ||
-    s === "cotton-lenin" ||
+    s === "cotton-linen" ||
     s === "cotton-silk-sarees"
   ) {
     return "cotton-silk-sarees";
@@ -24,10 +24,24 @@ export function resolveCollectionSlug(slug: string): string {
   ) {
     return "silk-sarees";
   }
-  if (s === "linen-sarees" || s === "linen" || s === "lenin") {
-    return "lenin-sarees";
+  if (s === "linen-sarees" || s === "linen" || s === "linen") {
+    return "linen-sarees";
   }
   return s;
+}
+
+const DEFAULT_COLLECTION_BANNERS: Record<string, string> = {
+  "cotton-sarees": "/images/cotton_sarees_banner.jpg",
+  "cotton-silk-sarees": "/images/banner-coll.jpg",
+  "linen-sarees": "/images/linen_banner.png",
+  "linen-sarees": "/images/linen_banner.png",
+  "silk-sarees": "/images/collections/pure-silk.jpg",
+};
+
+function resolveCollectionBanner(slug: string, imageSrc?: string | null): string {
+  if (imageSrc) return imageSrc;
+  const s = resolveCollectionSlug(slug);
+  return DEFAULT_COLLECTION_BANNERS[s] || "/images/banner_3.jpg";
 }
 
 /**
@@ -43,7 +57,7 @@ export async function getCollections(): Promise<Collection[]> {
         name: cat.name,
         slug: cat.slug,
         description: cat.description || `Explore our authentic, handcrafted curation of ${cat.name}.`,
-        bannerImage: cat.image?.src || undefined,
+        bannerImage: resolveCollectionBanner(cat.slug, cat.image?.src),
         heroTagline: "Handloom Heritage Edit",
         featured: true,
       }));
@@ -79,7 +93,7 @@ export async function getCollectionBySlug(slug: string): Promise<Collection | nu
         description:
           matched.description ||
           `Explore our authentic, handcrafted curation of ${matched.name}.`,
-        bannerImage: matched.image?.src || undefined,
+        bannerImage: resolveCollectionBanner(matched.slug, matched.image?.src),
         heroTagline: "Handloom Heritage Edit",
         featured: true,
       };

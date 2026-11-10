@@ -146,6 +146,50 @@ function mapStockStatus(
 }
 
 /**
+ * Curated distinct fallback category images when WordPress category thumbnail is not set
+ */
+const DEFAULT_CATEGORY_IMAGES: Record<string, string> = {
+  "silk-sarees": "/images/039A9658-scaled.jpg",
+  "pure-silk": "/images/039A9658-scaled.jpg",
+  "cotton-silk-sarees": "/images/IMG_4038-scaled.jpg",
+  "cotton-silk": "/images/IMG_4038-scaled.jpg",
+  "linen-sarees": "/images/IMG_5810-scaled.jpg",
+  "linen-sarees": "/images/IMG_5810-scaled.jpg",
+  "linen": "/images/IMG_5810-scaled.jpg",
+  "linen": "/images/IMG_5810-scaled.jpg",
+  "cotton-sarees": "/images/IMG_9590-scaled.jpg",
+  "cotton": "/images/IMG_9590-scaled.jpg",
+  "kanchipuram-silk": "/images/039A9658-scaled.jpg",
+  "banarasi-silk": "/images/prod-3.jpg",
+  "organza-sarees": "/images/IMG_5810-scaled.jpg",
+  "bridal-sarees": "/images/prod-7.jpg",
+};
+
+/**
+ * Resolves a unique, high-resolution image for a category
+ */
+export function resolveCategoryImage(slug: string, imageSrc?: string | null): string {
+  // 1. Live image from WooCommerce category thumbnail if provided
+  if (imageSrc) {
+    return normalizeWordPressImageUrl(imageSrc);
+  }
+
+  // 2. Exact match in curated category images
+  const normalizedSlug = slug.toLowerCase().trim();
+  if (DEFAULT_CATEGORY_IMAGES[normalizedSlug]) {
+    return DEFAULT_CATEGORY_IMAGES[normalizedSlug];
+  }
+
+  // 3. Keyword matching to avoid identical images
+  if (normalizedSlug.includes("cotton-silk")) return "/images/IMG_4038-scaled.jpg";
+  if (normalizedSlug.includes("cotton")) return "/images/IMG_9590-scaled.jpg";
+  if (normalizedSlug.includes("silk")) return "/images/039A9658-scaled.jpg";
+  if (normalizedSlug.includes("linen") || normalizedSlug.includes("linen")) return "/images/IMG_5810-scaled.jpg";
+
+  return "/images/039A9658-scaled.jpg";
+}
+
+/**
  * Adapts WooCommerce Category to frontend Category
  */
 export function adaptWCCategory(wcCat: WCCategory): Category {
@@ -154,7 +198,7 @@ export function adaptWCCategory(wcCat: WCCategory): Category {
     name: wcCat.name,
     slug: wcCat.slug,
     description: stripHtml(wcCat.description),
-    image: wcCat.image?.src ? normalizeWordPressImageUrl(wcCat.image.src) : "/images/prod-1.jpg",
+    image: resolveCategoryImage(wcCat.slug, wcCat.image?.src),
     itemCount: wcCat.count,
     featured: false,
   };
@@ -225,11 +269,11 @@ export function adaptWCProduct(wcProd: WCProduct): Product {
     categories.length > 0
       ? categories[0]
       : {
-          id: "uncategorized",
-          name: "Sarees",
-          slug: "sarees",
-          description: "",
-        };
+        id: "uncategorized",
+        name: "Sarees",
+        slug: "sarees",
+        description: "",
+      };
 
   // Build collection tags and aliases from categories and tags
   const collectionsSet = new Set<string>();
@@ -246,10 +290,10 @@ export function adaptWCProduct(wcProd: WCProduct): Product {
       collectionsSet.add("slick-sarees");
       collectionsSet.add("silk");
     }
-    if (s.includes("lenin") || s.includes("linen")) {
-      collectionsSet.add("lenin-sarees");
+    if (s.includes("linen") || s.includes("linen")) {
       collectionsSet.add("linen-sarees");
-      collectionsSet.add("lenin");
+      collectionsSet.add("linen-sarees");
+      collectionsSet.add("linen");
       collectionsSet.add("linen");
     }
   });
@@ -324,7 +368,7 @@ export function adaptWCProduct(wcProd: WCProduct): Product {
       fabric = "Pure Handloom Cotton";
     } else if (primaryCategory.name.toLowerCase().includes("silk")) {
       fabric = "Pure Mulberry Silk";
-    } else if (primaryCategory.name.toLowerCase().includes("lenin") || primaryCategory.name.toLowerCase().includes("linen")) {
+    } else if (primaryCategory.name.toLowerCase().includes("linen") || primaryCategory.name.toLowerCase().includes("linen")) {
       fabric = "Pure Organic Linen";
     }
   }
@@ -516,15 +560,15 @@ export function adaptWCOrder(wcOrder: any): Order {
     wcOrder.status === "completed" || wcOrder.status === "processing"
       ? "paid"
       : wcOrder.status === "refunded"
-      ? "refunded"
-      : "pending";
+        ? "refunded"
+        : "pending";
 
   const paymentMethod: PaymentMethod =
     wcOrder.payment_method === "cod"
       ? "cod"
       : wcOrder.payment_method === "upi"
-      ? "upi"
-      : "card";
+        ? "upi"
+        : "card";
 
   return {
     id: String(wcOrder.id),

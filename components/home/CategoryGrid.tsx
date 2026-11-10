@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { Category } from "@/lib/types";
 import { ArrowRight } from "lucide-react";
 
@@ -36,8 +36,8 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
               href={`/categories/${cat.slug}`}
               className="group relative block overflow-hidden bg-stone-200 aspect-[4/5] border border-stone-200"
             >
-              <Image
-                src={cat.image || "/images/prod-1.jpg"}
+              <SafeImage
+                src={cat.image || "/images/039A9658-scaled.jpg"}
                 alt={cat.name}
                 fill
                 className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
@@ -49,7 +49,9 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
               {/* Text content */}
               <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 text-white">
                 <span className="text-[10px] uppercase tracking-widest text-[#dfb873] font-medium block">
-                  {cat.itemCount ? `${cat.itemCount}+ Sarees` : "Handloom Curation"}
+                  {cat.itemCount && cat.itemCount > 0
+                    ? `${cat.itemCount} ${cat.itemCount === 1 ? "Saree" : "Sarees"}`
+                    : "Handloom Curation"}
                 </span>
                 <h3 className="text-sm sm:text-base font-serif font-normal mt-0.5 group-hover:text-[#dfb873] transition-colors">
                   {cat.name}

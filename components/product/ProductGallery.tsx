@@ -26,8 +26,8 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
               type="button"
               onClick={() => setSelectedIdx(idx)}
               className={`relative w-16 h-22 sm:w-20 sm:h-26 shrink-0 border transition-all duration-200 overflow-hidden cursor-pointer ${selectedIdx === idx
-                  ? "border-stone-900 ring-1 ring-stone-900"
-                  : "border-stone-200 hover:border-stone-400 opacity-70 hover:opacity-100"
+                ? "border-stone-900 ring-1 ring-stone-900"
+                : "border-stone-200 hover:border-stone-400 opacity-70 hover:opacity-100"
                 }`}
             >
               <SafeImage
@@ -55,9 +55,6 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
         />
 
         {/* Subtle Silk Mark Watermark */}
-        <div className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-xs px-2.5 py-1 text-[10px] uppercase tracking-widest font-medium text-stone-700 border border-stone-200 select-none">
-          Silk Mark Certified
-        </div>
       </div>
     </div>
   );
