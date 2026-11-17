@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { useAuthStore } from "@/lib/store/useAuthStore";
 import { getOrders } from "@/lib/api/orders";
 import { Order } from "@/lib/types";
@@ -125,8 +126,8 @@ export default function AccountOrdersPage() {
                     {order.items.map((item) => (
                       <div key={item.id} className="py-3 first:pt-0 flex items-center gap-4">
                         <div className="relative w-14 h-18 shrink-0 bg-stone-100 border border-stone-200 overflow-hidden">
-                          <Image
-                            src={item.imageUrl || "/images/prod-1.jpg"}
+                          <SafeImage
+                            src={item.imageUrl || ""}
                             alt={item.productName}
                             fill
                             className="object-cover"

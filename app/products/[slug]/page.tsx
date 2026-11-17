@@ -25,12 +25,14 @@ export async function generateMetadata({
     openGraph: {
       title: `${product.name} | Pudavai Kadai`,
       description: product.shortDescription || product.description,
-      images: [
-        {
-          url: product.images[0]?.url || "/images/prod-1.jpg",
-          alt: product.name,
-        },
-      ],
+      images: product.images?.[0]?.url
+        ? [
+            {
+              url: product.images[0].url,
+              alt: product.name,
+            },
+          ]
+        : [],
     },
   };
 }

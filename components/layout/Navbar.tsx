@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
-  Search,
   Heart,
   ShoppingBag,
   User,
@@ -74,8 +73,9 @@ export default function Navbar() {
     <>
       <header className="sticky top-0 left-0 right-0 z-40 transition-all duration-300">
         <nav
-          className={`w-full bg-white border-b border-stone-200 transition-all duration-300 ${isScrolled ? "h-16 shadow-sm" : "h-20"
-            }`}
+          className={`w-full bg-white border-b border-stone-200 transition-all duration-300 ${
+            isScrolled ? "h-16 shadow-sm" : "h-20"
+          }`}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between">
             {/* Left: Mobile Hamburger & Desktop Nav */}
@@ -116,41 +116,43 @@ export default function Navbar() {
                     return (
                       <div
                         key={item.id}
-                        className="relative"
+                        className="relative py-2"
                         onMouseEnter={() => setCollectionsOpen(true)}
                         onMouseLeave={() => setCollectionsOpen(false)}
                       >
                         <Link
                           href={item.href}
-                          className="flex items-center gap-1 py-2 hover:text-stone-950 transition-colors group"
+                          className="flex items-center gap-1.5 py-1 text-stone-700 hover:text-stone-950 transition-colors cursor-pointer"
                         >
-                          <span>{item.label}</span>
+                          <span className="font-semibold tracking-[0.2em]">{item.label}</span>
                           <ChevronDown
-                            className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-200 ${collectionsOpen ? "rotate-180 text-stone-900" : ""
-                              }`}
+                            className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-200 ${
+                              collectionsOpen ? "rotate-180 text-stone-900" : ""
+                            }`}
                           />
                         </Link>
 
-                        {/* Dropdown Menu */}
-                        {collectionsOpen && (
-                          <div className="absolute top-full left-0 w-64 bg-white border border-stone-200 shadow-xl py-3 px-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                        {/* Minimalistic Dropdown Menu with Hover Bridge & Smooth Fade Animation */}
+                        <div
+                          className={`absolute top-full left-0 pt-2 z-50 transition-all duration-200 ease-out origin-top-left ${
+                            collectionsOpen
+                              ? "opacity-100 translate-y-0 pointer-events-auto"
+                              : "opacity-0 -translate-y-1 pointer-events-none"
+                          }`}
+                        >
+                          <div className="w-52 bg-white border border-stone-200 shadow-xl py-2 rounded-xs">
                             {item.children.map((child) => (
                               <Link
                                 key={child.id}
                                 href={child.href}
                                 onClick={() => setCollectionsOpen(false)}
-                                className="flex items-center justify-between px-3 py-2 text-[11px] text-stone-600 hover:text-stone-950 hover:bg-stone-50 transition-colors"
+                                className="block px-4 py-2 text-[11px] uppercase tracking-[0.16em] text-stone-600 hover:text-stone-950 hover:bg-stone-50 transition-colors text-left font-medium"
                               >
-                                <span>{child.label}</span>
-                                {child.badge && (
-                                  <span className="text-[9px] px-1.5 py-0.5 bg-[#927238]/10 text-[#927238] font-semibold tracking-wider">
-                                    {child.badge}
-                                  </span>
-                                )}
+                                {child.label}
                               </Link>
                             ))}
                           </div>
-                        )}
+                        </div>
                       </div>
                     );
                   }
@@ -170,19 +172,8 @@ export default function Navbar() {
               </div>
             </div>
 
-            {/* Right: Actions (Search, Wishlist, Account, Cart) */}
+            {/* Right: Actions (Wishlist, Account, Cart) */}
             <div className="flex items-center gap-1 sm:gap-2">
-              {/* Search Trigger
-                <button
-                  type="button"
-                  onClick={() => setSearchOpen(true)}
-                  className="p-2.5 text-stone-600 hover:text-stone-950 transition-colors rounded-full hover:bg-stone-100"
-                  aria-label="Search"
-                  title="Search"
-                >
-                  <Search className="w-4 h-4" />
-                </button> */}
-
               {/* Wishlist Link with Badge */}
               <Link
                 href="/wishlist"
@@ -261,30 +252,35 @@ export default function Navbar() {
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6 space-y-5 text-xs uppercase tracking-[0.18em]">
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 text-xs uppercase tracking-[0.18em]">
               {MAIN_NAV_ITEMS.map((item) => (
                 <div key={item.id} className="border-b border-stone-100 pb-3">
-                  <Link
-                    href={item.href}
-                    onClick={() => handleMobileNavClick(item.href)}
-                    className="block font-medium text-stone-800 hover:text-black"
-                  >
-                    {item.label}
-                  </Link>
-
-                  {item.children && (
-                    <div className="pl-4 mt-2 space-y-2 border-l border-stone-200">
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.id}
-                          href={child.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="block text-[11px] text-stone-500 hover:text-stone-900"
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
+                  {item.children ? (
+                    <div>
+                      <div className="font-semibold text-stone-900 mb-2">
+                        {item.label}
+                      </div>
+                      <div className="pl-3 space-y-1.5 border-l border-stone-200">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.id}
+                            href={child.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="block py-1 text-[11px] text-stone-600 hover:text-stone-950 tracking-wider"
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      onClick={() => handleMobileNavClick(item.href)}
+                      className="block font-medium text-stone-800 hover:text-black"
+                    >
+                      {item.label}
+                    </Link>
                   )}
                 </div>
               ))}

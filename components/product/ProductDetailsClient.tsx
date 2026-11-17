@@ -225,7 +225,7 @@ export function ProductDetailsClient({
           </div>
 
           {/* Value Assurances Box */}
-          <div className="bg-stone-50 border border-stone-200 p-4 space-y-3 text-xs text-stone-700">
+          {/* <div className="bg-stone-50 border border-stone-200 p-4 space-y-3 text-xs text-stone-700">
             <div className="flex items-center gap-3">
               <ShieldCheck className="w-4 h-4 text-[#927238] shrink-0" />
               <span>Central Silk Board Certified 100% Pure Silk Mark</span>
@@ -238,7 +238,7 @@ export function ProductDetailsClient({
               <RotateCcw className="w-4 h-4 text-[#927238] shrink-0" />
               <span>7-Day easy exchange & dedicated handloom concierge</span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 

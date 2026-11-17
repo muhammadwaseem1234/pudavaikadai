@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import {
   ShieldCheck,
   CheckCircle2,
@@ -172,7 +173,7 @@ export default function CheckoutPage() {
           productSlug: item.product.slug,
           sku: item.variant?.sku || item.product.sku || "PK-WEAVE",
           imageUrl:
-            item.variant?.image || item.product.images[0]?.url || "/images/prod-1.jpg",
+            item.variant?.image || item.product.images?.[0]?.url || "",
           quantity: item.quantity,
           unitPrice,
           totalPrice: unitPrice * item.quantity,
@@ -397,11 +398,10 @@ export default function CheckoutPage() {
 
             <div className="space-y-3">
               <label
-                className={`flex items-start justify-between p-4 border transition-all cursor-pointer ${
-                  shippingMethod === "standard"
+                className={`flex items-start justify-between p-4 border transition-all cursor-pointer ${shippingMethod === "standard"
                     ? "border-stone-900 bg-white ring-1 ring-stone-900"
                     : "border-stone-200 bg-white hover:border-stone-400"
-                }`}
+                  }`}
               >
                 <div className="flex items-start gap-3">
                   <input
@@ -426,11 +426,10 @@ export default function CheckoutPage() {
               </label>
 
               <label
-                className={`flex items-start justify-between p-4 border transition-all cursor-pointer ${
-                  shippingMethod === "express"
+                className={`flex items-start justify-between p-4 border transition-all cursor-pointer ${shippingMethod === "express"
                     ? "border-stone-900 bg-white ring-1 ring-stone-900"
                     : "border-stone-200 bg-white hover:border-stone-400"
-                }`}
+                  }`}
               >
                 <div className="flex items-start gap-3">
                   <input
@@ -465,11 +464,10 @@ export default function CheckoutPage() {
 
             <div className="space-y-3">
               <label
-                className={`flex items-center justify-between p-4 border transition-all cursor-pointer ${
-                  paymentMethod === "upi"
+                className={`flex items-center justify-between p-4 border transition-all cursor-pointer ${paymentMethod === "upi"
                     ? "border-stone-900 bg-white ring-1 ring-stone-900"
                     : "border-stone-200 bg-white hover:border-stone-400"
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <input
@@ -490,11 +488,10 @@ export default function CheckoutPage() {
               </label>
 
               <label
-                className={`flex items-center justify-between p-4 border transition-all cursor-pointer ${
-                  paymentMethod === "card"
+                className={`flex items-center justify-between p-4 border transition-all cursor-pointer ${paymentMethod === "card"
                     ? "border-stone-900 bg-white ring-1 ring-stone-900"
                     : "border-stone-200 bg-white hover:border-stone-400"
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <input
@@ -515,11 +512,10 @@ export default function CheckoutPage() {
               </label>
 
               <label
-                className={`flex items-center justify-between p-4 border transition-all cursor-pointer ${
-                  paymentMethod === "cod"
+                className={`flex items-center justify-between p-4 border transition-all cursor-pointer ${paymentMethod === "cod"
                     ? "border-stone-900 bg-white ring-1 ring-stone-900"
                     : "border-stone-200 bg-white hover:border-stone-400"
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <input
@@ -574,11 +570,11 @@ export default function CheckoutPage() {
                 return (
                   <div key={item.id} className="py-3 first:pt-0 flex gap-3 text-xs">
                     <div className="relative w-12 h-16 shrink-0 bg-stone-200 overflow-hidden border border-stone-300">
-                      <Image
+                      <SafeImage
                         src={
                           item.variant?.image ||
-                          item.product.images[0]?.url ||
-                          "/images/prod-1.jpg"
+                          item.product.images?.[0]?.url ||
+                          ""
                         }
                         alt={item.product.name}
                         fill

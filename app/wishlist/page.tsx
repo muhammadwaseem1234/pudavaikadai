@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { Heart, ShoppingBag, Trash2, ArrowRight } from "lucide-react";
 import { useWishlistStore } from "@/lib/store/useWishlistStore";
 import { useCartStore } from "@/lib/store/useCartStore";
@@ -92,8 +93,8 @@ export default function WishlistPage() {
                   {/* Image */}
                   <div className="relative aspect-[3/4] w-full bg-stone-100 overflow-hidden">
                     <Link href={`/products/${product.slug}`}>
-                      <Image
-                        src={product.images[0]?.url || "/images/prod-1.jpg"}
+                      <SafeImage
+                        src={product.images?.[0]?.url || ""}
                         alt={product.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"

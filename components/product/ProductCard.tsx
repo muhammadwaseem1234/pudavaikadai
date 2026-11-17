@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { SafeImage } from "@/components/ui/SafeImage";
-import { Heart, ShoppingBag, Check } from "lucide-react";
+import { Heart, ShoppingBag, Check, ImageOff } from "lucide-react";
 import { Product } from "@/lib/types";
 import { formatCurrency, calculateDiscount } from "@/lib/utils/format";
 import { useWishlistStore } from "@/lib/store/useWishlistStore";
@@ -31,8 +31,8 @@ export function ProductCard({ product, className = "", priority = false }: Produ
   const discount = calculateDiscount(originalPrice, salePrice);
   const displayPrice = salePrice || originalPrice;
 
-  const primaryImage = product.images[0]?.url || "/images/prod-1.jpg";
-  const hoverImage = product.images[1]?.url || primaryImage;
+  const primaryImage = product.images?.[0]?.url || null;
+  const hoverImage = product.images?.[1]?.url || null;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -55,25 +55,36 @@ export function ProductCard({ product, className = "", priority = false }: Produ
       {/* Image container */}
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-stone-100 select-none">
         <Link href={`/products/${product.slug}`} className="block w-full h-full">
-          {/* Primary image */}
-          <SafeImage
-            src={primaryImage}
-            alt={product.name}
-            fill
-            priority={priority}
-            className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          />
+          {primaryImage ? (
+            <>
+              {/* Primary image */}
+              <SafeImage
+                src={primaryImage}
+                alt={product.name}
+                fill
+                priority={priority}
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              />
 
-          {/* Secondary image on hover (if different) */}
-          {hoverImage !== primaryImage && (
-            <SafeImage
-              src={hoverImage}
-              alt={`${product.name} alternate view`}
-              fill
-              className="object-cover object-center opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            />
+              {/* Secondary image on hover (if different) */}
+              {hoverImage && hoverImage !== primaryImage && (
+                <SafeImage
+                  src={hoverImage}
+                  alt={`${product.name} alternate view`}
+                  fill
+                  className="object-cover object-center opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                />
+              )}
+            </>
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center text-stone-400 bg-stone-50">
+              <div className="w-12 h-12 rounded-full bg-stone-100 border border-stone-200 flex items-center justify-center mb-2 text-stone-300">
+                <ImageOff className="w-6 h-6 stroke-[1.5]" />
+              </div>
+              <span className="text-[10px] font-mono text-stone-400 uppercase tracking-wider">Awaiting Live Photo</span>
+            </div>
           )}
         </Link>
 

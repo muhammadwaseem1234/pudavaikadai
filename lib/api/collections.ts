@@ -33,8 +33,8 @@ export function resolveCollectionSlug(slug: string): string {
 const DEFAULT_COLLECTION_BANNERS: Record<string, string> = {
   "cotton-sarees": "/images/cotton_sarees_banner.jpg",
   "cotton-silk-sarees": "/images/banner-coll.jpg",
-  "lenin-sarees": "/images/lenin_banner.png",
-  "linen-sarees": "/images/lenin_banner.png",
+  "linen-sarees": "/images/linen_banner.png",
+  "lenin-sarees": "/images/linen_banner.png",
   "silk-sarees": "/images/collections/pure-silk.jpg",
 };
 

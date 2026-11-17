@@ -8,7 +8,8 @@ interface SafeImageProps extends Omit<ImageProps, "onError"> {
   onError?: (e: React.SyntheticEvent<HTMLImageElement, Event>) => void;
 }
 
-const DEFAULT_FALLBACK = "/images/prod-1.jpg";
+const DEFAULT_FALLBACK =
+  "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='800' viewBox='0 0 600 800'><rect width='100%25' height='100%25' fill='%23f5f3ef'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='15' fill='%23a8a29e'>No Image Available</text></svg>";
 
 export function SafeImage({
   src,

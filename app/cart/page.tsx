@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import {
   ShoppingBag,
   Plus,
@@ -165,11 +166,11 @@ export default function CartPage() {
                   <div key={item.id} className="py-6 flex flex-col sm:flex-row gap-5">
                     {/* Thumbnail */}
                     <div className="relative w-24 h-32 shrink-0 bg-stone-100 border border-stone-200 overflow-hidden">
-                      <Image
+                      <SafeImage
                         src={
                           item.variant?.image ||
-                          item.product.images[0]?.url ||
-                          "/images/prod-1.jpg"
+                          item.product.images?.[0]?.url ||
+                          ""
                         }
                         alt={item.product.name}
                         fill

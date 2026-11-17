@@ -124,8 +124,8 @@ export function CartDrawer() {
                     <SafeImage
                       src={
                         item.variant?.image ||
-                        item.product.images[0]?.url ||
-                        "/images/prod-1.jpg"
+                        item.product.images?.[0]?.url ||
+                        ""
                       }
                       alt={item.product.name}
                       fill

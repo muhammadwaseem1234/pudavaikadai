@@ -153,10 +153,10 @@ const DEFAULT_CATEGORY_IMAGES: Record<string, string> = {
   "pure-silk": "/images/039A9658-scaled.jpg",
   "cotton-silk-sarees": "/images/IMG_4038-scaled.jpg",
   "cotton-silk": "/images/IMG_4038-scaled.jpg",
-  "lenin-sarees": "/images/IMG_5810-scaled.jpg",
   "linen-sarees": "/images/IMG_5810-scaled.jpg",
-  "lenin": "/images/IMG_5810-scaled.jpg",
+  "lenin-sarees": "/images/IMG_5810-scaled.jpg",
   "linen": "/images/IMG_5810-scaled.jpg",
+  "lenin": "/images/IMG_5810-scaled.jpg",
   "cotton-sarees": "/images/IMG_9590-scaled.jpg",
   "cotton": "/images/IMG_9590-scaled.jpg",
   "kanchipuram-silk": "/images/039A9658-scaled.jpg",
@@ -183,7 +183,7 @@ export function resolveCategoryImage(slug: string, imageSrc?: string | null): st
   // 3. Keyword matching to avoid identical images
   if (normalizedSlug.includes("cotton-silk")) return "/images/IMG_4038-scaled.jpg";
   if (normalizedSlug.includes("cotton")) return "/images/IMG_9590-scaled.jpg";
-  if (normalizedSlug.includes("lenin") || normalizedSlug.includes("linen")) return "/images/IMG_5810-scaled.jpg";
+  if (normalizedSlug.includes("linen") || normalizedSlug.includes("linen")) return "/images/IMG_5810-scaled.jpg";
   if (normalizedSlug.includes("silk")) return "/images/039A9658-scaled.jpg";
 
   return "/images/039A9658-scaled.jpg";
@@ -241,16 +241,8 @@ export function adaptWCProduct(wcProd: WCProduct): Product {
     }
   });
 
-  // 3. Fallback image if no photos exist
-  if (imageMap.size === 0) {
-    imageMap.set("/images/prod-1.jpg", {
-      id: "fallback",
-      url: "/images/prod-1.jpg",
-      alt: wcProd.name,
-      isPrimary: true,
-    });
-  }
-
+  // 3. Only live photos from WooCommerce backend or inline content are used.
+  // No local fallback images are injected so product photos are strictly live from the backend.
   const imageUrls = Array.from(imageMap.values());
   // Ensure exactly one is marked primary
   if (imageUrls.length > 0 && !imageUrls.some((img) => img.isPrimary)) {
@@ -536,7 +528,7 @@ export function adaptWCOrder(wcOrder: any): Order {
     productName: item.name,
     productSlug: item.sku || `item-${item.product_id}`,
     sku: item.sku || `SKU-${item.product_id}`,
-    imageUrl: item.image?.src || "/images/prod-1.jpg",
+    imageUrl: item.image?.src ? normalizeWordPressImageUrl(item.image.src) : "",
     quantity: item.quantity,
     unitPrice: parseFloat(item.price) || 0,
     totalPrice: parseFloat(item.total) || 0,

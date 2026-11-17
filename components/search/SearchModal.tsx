@@ -154,7 +154,7 @@ export function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   >
                     <div className="relative aspect-[3/4] w-full overflow-hidden bg-stone-200 mb-2">
                       <SafeImage
-                        src={product.images[0]?.url || "/images/prod-1.jpg"}
+                        src={product.images?.[0]?.url || ""}
                         alt={product.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"

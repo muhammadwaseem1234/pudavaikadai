@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { SafeImage } from "@/components/ui/SafeImage";
 import { notFound } from "next/navigation";
 import { getOrderById } from "@/lib/api/orders";
 import { formatCurrency, formatDate } from "@/lib/utils/format";
@@ -141,8 +142,8 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
             {order.items.map((item) => (
               <div key={item.id} className="py-4 first:pt-0 flex gap-4">
                 <div className="relative w-16 h-22 shrink-0 bg-stone-100 border border-stone-200 overflow-hidden">
-                  <Image
-                    src={item.imageUrl || "/images/prod-1.jpg"}
+                  <SafeImage
+                    src={item.imageUrl || ""}
                     alt={item.productName}
                     fill
                     className="object-cover"
